@@ -4,10 +4,9 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-
   return (
     <>
-      <h1>Welcome to group 5</h1>
+      <h1 className="bg-blue-500 text-white p-4 font-medium">Welcome to group 5</h1>
     </>
   )
 }
