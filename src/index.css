@@ -1,1 +1,52 @@
-
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    background-color: #343a40;
+    height: 100vh;
+    color: white;
+    padding: 10px;
+  }
+  
+  .sidebar .list-group-item {
+    background-color: transparent;
+    border: none;
+    color: white;
+  }
+  
+  .sidebar .list-group-item:hover {
+    background-color: #495057;
+  }
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+  .card-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .card-container .card {
+    flex: 1;
+    margin: 10px;
+  }
+  
+  .charts {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .charts .chart {
+    flex: 1;
+    margin: 10px;
+  }
+  

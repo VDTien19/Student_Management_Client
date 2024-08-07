@@ -1,14 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-function App() {
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+const App = () => {
   return (
-    <>
-      <h1 className="bg-blue-500 text-white p-4 font-medium">Welcome to group 5</h1>
-    </>
-  )
-}
+    <div className="app" style={{ background: '#f0f2f5' }}>
+      <Header />
+      <Container fluid>
+        <Row>
+          <Col className="p-0">
+            <Sidebar />
+          </Col>
+          {/* <Col xs={10}>
+            <Dashboard />
+          </Col> */}
+        </Row>
+      </Container>
+    </div>
+  );
+};
 
-export default App
+export default App;
