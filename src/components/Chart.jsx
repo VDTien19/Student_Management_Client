@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
+// eslint-disable-next-line react/prop-types
 const Chart = ({ title }) => {
   return (
     <Card className="mb-4">
