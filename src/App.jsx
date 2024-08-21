@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
+import UserList from './components/UserList';
+import UserEdit from './components/UserEdit';
+import AddUser from './components/AddUser';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,19 +20,25 @@ const App = () => {
       {!isLoggedIn ? (
         <Login onLogin={handleLogin} />
       ) : (
-        <>
-          <Header />
-          <Container fluid>
-            <Row>
-              <Col className="p-0">
-                <Sidebar />
-              </Col>
-              {/* <Col xs={10}>
-                <Dashboard />
-              </Col> */}
-            </Row>
-          </Container>
-        </>
+        <Router>
+          <>
+            <Header />
+            <Container fluid>
+              <Row>
+                <Col className="p-0" xs={2}>
+                  <Sidebar />
+                </Col>
+                <Col xs={10}>
+                  <Switch>
+                    <Route exact path="/users" component={UserList} />
+                    <Route path="/users/edit/:id" component={UserEdit} />
+                    <Route path="/users/add" component={AddUser} />
+                  </Switch>
+                </Col>
+              </Row>
+            </Container>
+          </>
+        </Router>
       )}
     </div>
   );

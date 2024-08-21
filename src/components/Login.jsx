@@ -6,47 +6,43 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     
-  //   // Replace with your API endpoint
-  //   const apiUrl = 'http://localhost:8080/api/auth/login';
+    const apiUrl = 'http://localhost:8080/api/auth/login';
     
-  //   try {
-  //     const response = await fetch(apiUrl, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         username,
-  //         password,
-  //       }),
-  //     });
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-  //     if (!response.ok) {
-  //       throw new Error('Invalid credentials');
-  //     }
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
 
-  //     const data = await response.json();
+      const data = await response.json();
 
-  //     if (rememberMe) {
-  //       // Store tokens in local storage or cookies if needed
-  //       localStorage.setItem('accessToken', data.accessToken);
-  //       localStorage.setItem('refreshToken', data.refreshToken);
-  //     } else {
-  //       // Otherwise, just store them in the session storage
-  //       sessionStorage.setItem('accessToken', data.accessToken);
-  //       sessionStorage.setItem('refreshToken', data.refreshToken);
-  //     }
+      if (rememberMe) {
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
+      } else {
+        sessionStorage.setItem('accessToken', data.accessToken);
+        sessionStorage.setItem('refreshToken', data.refreshToken);
+      }
 
-  //     // Trigger any additional actions on successful login
-  //     onLogin();
+      onLogin();
       
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // };
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <div className="col-md-6 login-container">
