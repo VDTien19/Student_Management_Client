@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const TeacherList = () => {
   const [teachers, setTeachers] = useState([]);
@@ -27,6 +28,9 @@ const TeacherList = () => {
   return (
     <div>
       <h2>Teacher List</h2>
+      <Link to="/teachers/add">
+        <button>Add Teacher</button>
+      </Link>
       {teachers.length === 0 ? (
         <p>No teachers found</p>
       ) : (

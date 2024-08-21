@@ -7,6 +7,8 @@ import Login from './components/Login';
 import UserList from './components/UserList';
 import UserEdit from './components/UserEdit';
 import AddUser from './components/AddUser';
+import TeacherList from './components/teachers/profile';
+import AddTeacher from './components/teachers/create';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,6 +35,12 @@ const App = () => {
                     <Route exact path="/users" component={UserList} />
                     <Route path="/users/edit/:id" component={UserEdit} />
                     <Route path="/users/add" component={AddUser} />
+                  </Switch>
+                </Col>
+                <Col xs={10}>
+                  <Switch>
+                    <Route exact path="/teachers" component={TeacherList} />
+                    <Route path="/teachers/add" component={AddTeacher} />
                   </Switch>
                 </Col>
               </Row>
