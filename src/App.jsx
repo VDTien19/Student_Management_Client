@@ -4,9 +4,9 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
-import UserList from './components/UserList';
-import UserEdit from './components/UserEdit';
-import AddUser from './components/AddUser';
+import UserList from './components/students/profile';
+import UserEdit from './components/students/update'
+import AddUser from './components/students/create';
 import TeacherList from './components/teachers/profile';
 import AddTeacher from './components/teachers/create';
 
