@@ -1,0 +1,46 @@
+.sidebar {
+  background: #343a40;
+  color: white;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.sidebar .nav-link {
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.sidebar .nav-link.active {
+  background: #495057;
+}
+
+.sidebar-button {
+  background: green;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-button:hover {
+  background: darkgreen;
+}
+
+.sidebar-content {
+  background: white;
+  padding: 2rem;
+}
+
+.sidebar-content .search-bar {
+  margin-bottom: 1rem;
+}
+
+.sidebar-content .filters {
+  margin-bottom: 1rem;
+}
+
+.sidebar-content .btn-group {
+  margin-top: 1rem;
+}

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './AddTeacher.css';
 
 const AddTeacher = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullname: '',
     mgv: '',
@@ -14,44 +15,47 @@ const AddTeacher = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-
   const handleAddTeacher = async (e) => {
     e.preventDefault();
     try {
       await axios.post('/api/teachers/create-teacher', formData);
       alert('Teacher added successfully');
-      history.push('/teachers');
+      navigate('/teachers');
     } catch (err) {
       alert('Error adding teacher: ' + err.message);
     }
   };
 
   return (
-    <div>
+    <div className="add-teacher-container">
       <h2>Add New Teacher</h2>
-      <form onSubmit={handleAddTeacher}>
-        <div>
-          <label>Full Name:</label>
+      <form onSubmit={handleAddTeacher} className="add-teacher-form">
+        <div className="form-group">
+          <label htmlFor="fullname">Full Name:</label>
           <input
+            id="fullname"
             type="text"
             name="fullname"
             value={formData.fullname}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <div>
-          <label>MGV (Teacher ID):</label>
+        <div className="form-group">
+          <label htmlFor="mgv">MGV (Teacher ID):</label>
           <input
+            id="mgv"
             type="text"
             name="mgv"
             value={formData.mgv}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <div>
-          <button type="submit">Add Teacher</button>
+        <div className="form-group">
+          <button type="submit" className="submit-button">Add Teacher</button>
         </div>
       </form>
     </div>

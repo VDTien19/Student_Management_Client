@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './userList.css'; 
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [searchId, setSearchId] = useState('');
 
   const fetchUsers = async () => {
     try {
       const response = await axios.get('/api/users/getAll');
-      setUsers(response.data.data);
+      setUsers(response.data.data || []);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -18,9 +21,43 @@ const UserList = () => {
     }
   };
 
+  const searchUserById = async (id) => {
+    try {
+      const response = await axios.get(`/api/users/${id}`);
+      if (response.data.data) {
+        setUsers([response.data.data]);
+      } else {
+        alert('User not found');
+      }
+    } catch (err) {
+      alert('Error fetching user: ' + err.message);
+    }
+  };
+
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await axios.get('/api/users/me', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      setCurrentUser(response.data.data);
+    } catch (err) {
+      console.error('Error fetching current user: ', err);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
+    fetchCurrentUser(); 
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchId.trim()) {
+      searchUserById(searchId);
+    } else {
+      alert('Please enter a valid user ID');
+    }
+  };
 
   const handleDeleteUser = async (id) => {
     const confirmed = window.confirm('Are you sure you want to delete this user?');
@@ -39,16 +76,25 @@ const UserList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h2>User List</h2>
+    <div className="user-list">
+      <h2>Danh sách sinh viên</h2>
+      <form onSubmit={handleSearch} className="search-form">
+        <input
+          type="text"
+          placeholder="Search by User ID"
+          value={searchId}
+          onChange={(e) => setSearchId(e.target.value)}
+        />
+        <button type="submit">Search</button>
+      </form>
       <Link to="/users/add">
-        <button>Add User</button>
+        <button className="add-user-btn">Thêm sinh viên</button>
       </Link>
-      {users.length === 0 ? (
+      {Array.isArray(users) && users.length === 0 ? (
         <p>No users found</p>
       ) : (
         <ul>
-          {users.map(user => (
+          {Array.isArray(users) && users.map(user => (
             <li key={user._id}>
               <h3>{user.fullname}</h3>
               <p>Email: {user.email}</p>
@@ -58,12 +104,15 @@ const UserList = () => {
               <p>Year: {user.year}</p>
               <p>Major: {user.majorIds.map(major => major.name).join(', ')}</p>
               <p>GVCN: {user.gvcn?.name || 'N/A'}</p>
-              {/* Nút Xoá */}
-              <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
-              {/* Nút Chỉnh Sửa */}
-              <Link to={`/users/edit/${user._id}`}>
-                <button>Edit</button>
-              </Link>
+              <div className="button-group">
+                <button className="delete-btn" onClick={() => handleDeleteUser(user._id)}>Delete</button>
+
+                {(currentUser && currentUser.role === 'admin') || currentUser?._id === user._id ? (
+                  <Link to={`/users/edit/${user._id}`}>
+                    <button className="edit-btn">Edit</button>
+                  </Link>
+                ) : null}
+              </div>
             </li>
           ))}
         </ul>

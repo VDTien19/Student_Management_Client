@@ -1,0 +1,53 @@
+.add-user {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-user h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .add-user form {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping to the next line if needed */
+    gap: 20px; /* Space between items */
+  }
+  
+  .add-user .form-group {
+    flex: 1 1 calc(50% - 20px); /* Flex-grow, flex-shrink, and basis */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-user label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .add-user input,
+  .add-user select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .add-user button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .add-user button:hover {
+    background-color: #0056b3;
+  }
+  
