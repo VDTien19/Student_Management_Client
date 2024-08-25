@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './addUser.css';
 
 const AddUser = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullname: '',
     msv: '',
@@ -33,7 +34,7 @@ const AddUser = () => {
     try {
       await axios.post('/api/users/create-user', formData);
       alert('User added successfully');
-      history.push('/users');
+      navigate('/users');
     } catch (err) {
       alert('Error adding user: ' + err.message);
     }
@@ -44,8 +45,8 @@ const AddUser = () => {
       try {
         const majorResponse = await axios.get('/api/majors');
         const teacherResponse = await axios.get('/api/teachers');
-        setMajors(majorResponse.data.data);
-        setTeachers(teacherResponse.data.data);
+        setMajors(majorResponse.data.data || []);
+        setTeachers(teacherResponse.data.data || []);
       } catch (err) {
         console.error('Error fetching data:', err);
       }
@@ -54,10 +55,9 @@ const AddUser = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Add New User</h2>
+    <div className="add-user">
       <form onSubmit={handleAddUser}>
-        <div>
+        <div className="form-group">
           <label>Full Name:</label>
           <input
             type="text"
@@ -67,7 +67,7 @@ const AddUser = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>MSV (Student ID):</label>
           <input
             type="text"
@@ -77,7 +77,7 @@ const AddUser = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Year:</label>
           <input
             type="text"
@@ -87,7 +87,7 @@ const AddUser = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Class:</label>
           <input
             type="text"
@@ -96,7 +96,7 @@ const AddUser = () => {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Email:</label>
           <input
             type="email"
@@ -106,7 +106,7 @@ const AddUser = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Gender:</label>
           <select
             name="gender"
@@ -118,7 +118,7 @@ const AddUser = () => {
             <option value="Other">Other</option>
           </select>
         </div>
-        <div>
+        <div className="form-group">
           <label>Teacher (GVCN):</label>
           <select
             name="gvcn"
@@ -126,14 +126,14 @@ const AddUser = () => {
             onChange={handleChange}
           >
             <option value="">Select a teacher</option>
-            {teachers.map(teacher => (
+            {Array.isArray(teachers) && teachers.map(teacher => (
               <option key={teacher._id} value={teacher._id}>
                 {teacher.name}
               </option>
             ))}
           </select>
         </div>
-        <div>
+        <div className="form-group">
           <label>Majors:</label>
           <select
             name="majorIds"
@@ -141,7 +141,7 @@ const AddUser = () => {
             value={formData.majorIds}
             onChange={handleSelectMajor}
           >
-            {majors.map(major => (
+            {Array.isArray(majors) && majors.map(major => (
               <option key={major._id} value={major._id}>
                 {major.name}
               </option>

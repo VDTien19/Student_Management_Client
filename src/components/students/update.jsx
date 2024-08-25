@@ -1,118 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-const UserEdit = () => {
-  const { id } = useParams(); 
-  const history = useHistory();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchUser = async () => {
-    try {
-      const response = await axios.get(`/api/users/${id}`);
-      setUser(response.data.data);
-      setLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
-  };
+const UserProfileUpdate = () => {
+  const [formData, setFormData] = useState({
+    fullname: '',
+    email: '',
+    gender: '',
+    dob: '',
+    phone: '',
+    address: '',
+  });
 
   useEffect(() => {
-    fetchUser();
-  }, [id]);
+    axios.get(`/api/user/${localStorage.getItem('userId')}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    })
+    .then((res) => setFormData(res.data.data))
+    .catch((err) => console.error(err));
+  }, []);
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleUpdateUser = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await axios.put(`/api/users/updateProfile/${id}`, user);
-      alert('User updated successfully');
-      history.push('/users');
-    } catch (err) {
-      alert('Error updating user: ' + err.message);
-    }
+    axios.put(`/api/user/updateProfile/${localStorage.getItem('userId')}`, formData, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    })
+    .then((res) => alert('Profile updated successfully!'))
+    .catch((err) => console.error(err));
   };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h2>Edit User</h2>
-      {user && (
-        <form onSubmit={handleUpdateUser}>
-          <div>
-            <label>Full Name:</label>
-            <input
-              type="text"
-              name="fullname"
-              value={user.fullname}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label>Class:</label>
-            <input
-              type="text"
-              name="class"
-              value={user.class}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Phone:</label>
-            <input
-              type="text"
-              name="phone"
-              value={user.phone}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Gender:</label>
-            <select
-              name="gender"
-              value={user.gender}
-              onChange={handleChange}
-            >
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div>
-            <label>Date of Birth:</label>
-            <input
-              type="date"
-              name="dob"
-              value={user.dob?.split('T')[0] || ''}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <button type="submit">Update User</button>
-          </div>
-        </form>
-      )}
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="fullname" value={formData.fullname} onChange={handleChange} placeholder="Full Name" />
+      <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
+      <input type="date" name="dob" value={formData.dob} onChange={handleChange} placeholder="Date of Birth" />
+      <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" />
+      <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address" />
+      <select name="gender" value={formData.gender} onChange={handleChange}>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <button type="submit">Update Profile</button>
+    </form>
   );
 };
 
-export default UserEdit;
+export default UserProfileUpdate;

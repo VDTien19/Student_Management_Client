@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Thay Switch bằng Routes
 import { Container, Row, Col } from 'react-bootstrap';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
 import UserList from './components/students/profile';
-import UserEdit from './components/students/update'
+import UserEdit from './components/students/update';
 import AddUser from './components/students/create';
 import TeacherList from './components/teachers/profile';
 import AddTeacher from './components/teachers/create';
+import CourseList from './components/course/courseList';
+import AddCourse from './components/course/create';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,17 +33,15 @@ const App = () => {
                   <Sidebar />
                 </Col>
                 <Col xs={10}>
-                  <Switch>
-                    <Route exact path="/users" component={UserList} />
-                    <Route path="/users/edit/:id" component={UserEdit} />
-                    <Route path="/users/add" component={AddUser} />
-                  </Switch>
-                </Col>
-                <Col xs={10}>
-                  <Switch>
-                    <Route exact path="/teachers" component={TeacherList} />
-                    <Route path="/teachers/add" component={AddTeacher} />
-                  </Switch>
+                  <Routes>
+                    <Route path="/users" element={<UserList />} />
+                    <Route path="/users/edit/:id" element={<UserEdit />} />
+                    <Route path="/users/add" element={<AddUser />} />
+                    <Route path="/teachers" element={<TeacherList />} />
+                    <Route path="/teachers/add" element={<AddTeacher />} />
+                    <Route path="/courses" element={<CourseList />} />
+                    <Route path="/add-course" element={<AddCourse />} />
+                  </Routes>
                 </Col>
               </Row>
             </Container>
