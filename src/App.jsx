@@ -11,6 +11,9 @@ import TeacherList from './components/teachers/profile';
 import AddTeacher from './components/teachers/create';
 import CourseList from './components/course/courseList';
 import AddCourse from './components/course/create';
+import EditCourse from './components/course/update';
+import MajorList from './components/majors/majorsList';
+import AddMajor from './components/majors/create';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,6 +44,9 @@ const App = () => {
                     <Route path="/teachers/add" element={<AddTeacher />} />
                     <Route path="/courses" element={<CourseList />} />
                     <Route path="/add-course" element={<AddCourse />} />
+                    <Route path="/edit-course/:id" element={<EditCourse />} />
+                    <Route path="/majors" element={<MajorList />} />
+                    <Route path="/add-major" element={<AddMajor />} />
                   </Routes>
                 </Col>
               </Row>

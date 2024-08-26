@@ -1,0 +1,67 @@
+.edit-major-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .edit-major-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .edit-major-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .edit-major-container .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .edit-major-container label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .edit-major-container input {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+  }
+  
+  .edit-major-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+  
+  .edit-major-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .edit-major-container button[type="button"] {
+    background-color: #6c757d;
+  }
+  
+  .edit-major-container button[type="button"]:hover {
+    background-color: #5a6268;
+  }
+  
+  .edit-major-container p {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  

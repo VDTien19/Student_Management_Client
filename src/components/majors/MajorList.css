@@ -1,0 +1,48 @@
+.major-list-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .major-list-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .major-list-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  
+  .major-list-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .major-list-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .major-list-container li {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .major-list-container h2 {
+    font-size: 20px;
+    margin: 0;
+  }
+  
+  .major-list-container p {
+    font-size: 16px;
+    margin: 5px 0 0;
+  }
+  

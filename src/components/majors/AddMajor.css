@@ -1,0 +1,63 @@
+.add-major-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.add-major-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.add-major-container form {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép các phần tử con xuống hàng khi cần */
+}
+
+.add-major-container .form-group {
+  flex: 1; /* Các ô input sẽ chiếm cùng một kích thước */
+  margin-right: 20px; /* Khoảng cách giữa các ô input */
+  margin-bottom: 15px;
+}
+
+.add-major-container .form-group:last-child {
+  margin-right: 0; /* Không có khoảng cách bên phải cho ô input cuối cùng */
+}
+
+.add-major-container label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  display: block; /* Đảm bảo label nằm trên cùng ô input */
+}
+
+.add-major-container input {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%; /* Chiếm toàn bộ chiều rộng của ô chứa */
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+}
+
+.add-major-container button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.add-major-container button:hover {
+  background-color: #218838;
+}
+
+.add-major-container p {
+  font-size: 16px;
+  margin: 10px 0;
+}
