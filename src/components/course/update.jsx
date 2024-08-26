@@ -1,20 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Form, Button, Container, Alert } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Form, Button, Container, Alert, Spinner } from 'react-bootstrap';
 
-const AddCourse = () => {
+const EditCourse = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [course, setCourse] = useState(null);
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [credit, setCredit] = useState('');
   const [majorId, setMajorId] = useState('');
-  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
+
+  // Fetch thông tin môn học theo id khi component mount
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const response = await axios.get(`/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        setCourse(response.data.data);
+        setName(response.data.data.name);
+        setCode(response.data.data.code);
+        setCredit(response.data.data.credit);
+        setMajorId(response.data.data.majorId?._id || '');
+      } catch (err) {
+        setError(err.response?.data?.message || err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourse();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/add-course', {
+      const response = await axios.put(`/update/${id}`, {
         name,
         code,
         credit,
@@ -25,20 +56,37 @@ const AddCourse = () => {
         }
       });
 
-      setMessage(response.data.message);
-      // Reset form fields
-      setName('');
-      setCode('');
-      setCredit('');
-      setMajorId('');
+      setMessage('Course updated successfully!');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000); 
     } catch (err) {
       setError(err.response?.data?.message || err.message);
     }
   };
 
+  if (loading) {
+    return (
+      <Container className="text-center mt-5">
+        <Spinner animation="border" />
+        <p>Loading...</p>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="mt-5">
+        <Alert variant="danger">
+          <p>Error: {error}</p>
+        </Alert>
+      </Container>
+    );
+  }
+
   return (
     <Container className="mt-5">
-      <h1>Thêm môn học</h1>
+      <h1>sửa môn học</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formCourseName">
           <Form.Label>Course Name</Form.Label>
@@ -85,7 +133,7 @@ const AddCourse = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Add Course
+          Update Course
         </Button>
       </Form>
 
@@ -104,4 +152,4 @@ const AddCourse = () => {
   );
 };
 
-export default AddCourse;
+export default EditCourse;

@@ -490,8 +490,8 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a href="/qldiemdanh" className="nav-link text-dark">
-            <FaClipboardCheck className="me-2" /> Quản lý điểm danh
+          <a href="/majors" className="nav-link text-dark">
+            <FaClipboardCheck className="me-2" /> Quản lý chuyên ngành
           </a>
         </li>
         <li className="nav-item">
