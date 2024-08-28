@@ -14,7 +14,7 @@ const AddCourse = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/add-course', {
+      const response = await axios.post('http://localhost:8080/api/course/add-course', {
         name,
         code,
         credit,
