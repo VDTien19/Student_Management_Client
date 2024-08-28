@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import Header from './components/Header';
@@ -17,6 +17,14 @@ import AddMajor from './components/majors/create';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Kiểm tra trạng thái đăng nhập từ localStorage khi ứng dụng khởi động
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
