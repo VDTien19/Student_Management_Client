@@ -1,89 +1,68 @@
 import React, { useState } from 'react';
-import './Login.css';
+import axios from 'axios';
+import { Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
-    const apiUrl = 'http://localhost:8080/api/auth/login';
-    
     try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Invalid credentials');
-      }
-
-      const data = await response.json();
-
-      if (rememberMe) {
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
-      } else {
-        sessionStorage.setItem('accessToken', data.accessToken);
-        sessionStorage.setItem('refreshToken', data.refreshToken);
-      }
-
-      onLogin();
+      const response = await axios.post('http://localhost:8080/api/auth/login', { username, password });
+      setSuccess('Đăng nhập thành công!');
+      setError('');
       
-    } catch (error) {
-      alert(error.message);
+      // Lưu token vào localStorage hoặc state management
+      localStorage.setItem('accessToken', response.data.tokens.accessToken);
+      localStorage.setItem('refreshToken', response.data.tokens.refreshToken);
+      // Chuyển hướng đến trang chính
+      navigate('/dashboard')
+    } catch (err) {
+      setSuccess('');
+      setError(err.response?.data?.message || 'Đăng nhập thất bại!');
     }
   };
 
   return (
-    <div className="col-md-6 login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit} className="login-form">
-        <div className="form-group">
-          <label>Username</label>
-          <input
-            type="text"
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Form onSubmit={handleLogin} className="p-4 border rounded">
+        <h3 className="text-center mb-3">Login</h3>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {success && <Alert variant="success">{success}</Alert>}
+        <Form.Group className="mb-3" controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control 
+            type="text" 
+            placeholder="Enter username" 
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="form-control"
             required
           />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control 
+            type="password" 
+            placeholder="Enter password" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="form-control"
             required
           />
-        </div>
-        <div className="form-group remember-me">
-          <input
-            type="checkbox"
-            checked={rememberMe}
-            onChange={(e) => setRememberMe(e.target.checked)}
-            id="rememberMe"
-          />
-          <label htmlFor="rememberMe">Remember Me</label>
-        </div>
-        <button type="submit" className="btn btn-primary btn-block">Login</button>
-        <div className="login-footer">
-          <a href="#" className="forgot-password">Forgot Password?</a>
-        </div>
-      </form>
+        </Form.Group>
+
+        <Button variant="primary" type="submit" className="w-100">
+          Login
+        </Button>
+      </Form>
     </div>
   );
 };
 
 export default Login;
+
