@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { sendPost } from '../../utils/httpUtil'
 import './AddTeacher.css';
 
 const AddTeacher = () => {
@@ -18,7 +18,7 @@ const AddTeacher = () => {
   const handleAddTeacher = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/teachers/create-teacher', formData);
+      await sendPost('http://localhost:8080/api/teacher/create-teacher', formData);
       alert('Teacher added successfully');
       navigate('/teachers');
     } catch (err) {

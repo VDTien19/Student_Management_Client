@@ -1,156 +1,160 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Form, Button, Alert } from 'react-bootstrap';
+import './addUser.css';
+import { sendPost } from '../../utils/httpUtil'
 
-const StudentForm = () => {
+const AddUser = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullname: '',
     msv: '',
     year: '',
     gvcn: '',
-    gender: '',
+    gender: 'Male',
     className: '',
     email: '',
-    majorIds: []
+    majorIds: [],
   });
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [majors, setMajors] = useState([]);
+  const [teachers, setTeachers] = useState([]);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSelectMajor = (e) => {
+    const selectedMajors = Array.from(e.target.selectedOptions, option => option.value);
+    setFormData({ ...formData, majorIds: selectedMajors });
+  };
+
+  const handleAddUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/api/user/create-user', formData, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        }
-      });
-      setSuccess('Student added successfully!');
-      setError('');
-      setFormData({
-        fullname: '',
-        msv: '',
-        year: '',
-        gvcn: '',
-        gender: '',
-        className: '',
-        email: '',
-        majorIds: []
-      });
+      const response = await sendPost('http://localhost:8080/api/user/create-user', formData);
+      alert('User added successfully');
+      navigate('/users');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to add student');
-      setSuccess('');
+      alert('Error adding user: ' + err);
     }
   };
 
+  useEffect(() => {
+    const fetchMajorsAndTeachers = async () => {
+      try {
+        const majorResponse = await axios.get('/api/majors');
+        const teacherResponse = await axios.get('/api/teachers');
+        setMajors(majorResponse.data.data || []);
+        setTeachers(teacherResponse.data.data || []);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    };
+    fetchMajorsAndTeachers();
+  }, []);
+
   return (
-    <div className="container mt-4">
-      <h2>Add Student</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">{success}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="fullname">
-          <Form.Label>Full Name</Form.Label>
-          <Form.Control
+    <div className="add-user">
+      <form onSubmit={handleAddUser}>
+        <div className="form-group">
+          <label>Full Name:</label>
+          <input
             type="text"
-            placeholder="Enter full name"
             name="fullname"
             value={formData.fullname}
             onChange={handleChange}
             required
           />
-        </Form.Group>
-        <Form.Group controlId="msv">
-          <Form.Label>MSV</Form.Label>
-          <Form.Control
+        </div>
+        <div className="form-group">
+          <label>MSV (Student ID):</label>
+          <input
             type="text"
-            placeholder="Enter MSV"
             name="msv"
             value={formData.msv}
             onChange={handleChange}
             required
           />
-        </Form.Group>
-        <Form.Group controlId="year">
-          <Form.Label>Year</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Enter year"
+        </div>
+        <div className="form-group">
+          <label>Year:</label>
+          <input
+            type="text"
             name="year"
             value={formData.year}
             onChange={handleChange}
             required
           />
-        </Form.Group>
-        <Form.Group controlId="gvcn">
-          <Form.Label>Teacher ID</Form.Label>
-          <Form.Control
+        </div>
+        <div className="form-group">
+          <label>Class:</label>
+          <input
             type="text"
-            placeholder="Enter teacher ID"
-            name="gvcn"
-            value={formData.gvcn}
-            onChange={handleChange}
-          />
-        </Form.Group>
-        <Form.Group controlId="gender">
-          <Form.Label>Gender</Form.Label>
-          <Form.Control
-            as="select"
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="className">
-          <Form.Label>Class Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter class name"
             name="className"
             value={formData.className}
             onChange={handleChange}
           />
-        </Form.Group>
-        <Form.Group controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
+        </div>
+        <div className="form-group">
+          <label>Email:</label>
+          <input
             type="email"
-            placeholder="Enter email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
           />
-        </Form.Group>
-        <Form.Group controlId="majorIds">
-          <Form.Label>Major IDs (comma separated)</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter major IDs"
-            name="majorIds"
-            value={formData.majorIds}
+        </div>
+        <div className="form-group">
+          <label>Gender:</label>
+          <select
+            name="gender"
+            value={formData.gender}
             onChange={handleChange}
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Add Student
-        </Button>
-      </Form>
+          >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Teacher (GVCN):</label>
+          <select
+            name="gvcn"
+            value={formData.gvcn}
+            onChange={handleChange}
+          >
+            <option value="">Select a teacher</option>
+            {Array.isArray(teachers) && teachers.map(teacher => (
+              <option key={teacher._id} value={teacher._id}>
+                {teacher.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Majors:</label>
+          <select
+            name="majorIds"
+            multiple
+            value={formData.majorIds}
+            onChange={handleSelectMajor}
+          >
+            {Array.isArray(majors) && majors.map(major => (
+              <option key={major._id} value={major._id}>
+                {major.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <button type="submit">Add User</button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default StudentForm;
+export default AddUser;
