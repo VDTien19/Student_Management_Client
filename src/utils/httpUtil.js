@@ -1,59 +1,3 @@
-// let accessToken = "";
-// let refreshToken = "";
-
-// export const setTokens = (newAccessToken, newRefreshToken) => {
-//   accessToken = newAccessToken;
-//   refreshToken = newRefreshToken;
-// };
-
-// const sendRequest = async (url, method, data) => {
-//   const headers = {
-//     'Content-Type': 'application/json',
-//     Authorization: `Bearer ${accessToken}`,
-//   };
-
-//   const options = {
-//     method,
-//     headers,
-//     body: data ? JSON.stringify(data) : null,
-//   };
-
-//   const response = await fetch(url, options);
-
-//   if (!response.ok) {
-//     // Handle unauthorized and refresh token
-//     if (response.status === 401) {
-//       await refreshAccessToken();
-//       return sendRequest(url, method, data);
-//     }
-//     throw new Error(`HTTP error! Status: ${response.status}`);
-//   }
-
-//   return response.json();
-// };
-
-// const refreshAccessToken = async () => {
-//   // Logic to refresh the token
-//   const response = await fetch('http://localhost:8080/api/auth/refresh', {
-//     method: 'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({ refreshToken }),
-//   });
-
-//   if (!response.ok) {
-//     throw new Error('Failed to refresh token');
-//   }
-
-//   const data = await response.json();
-//   setTokens(data.accessToken, data.refreshToken);
-// };
-
-// export const get = (url) => sendRequest(url, 'GET');
-// export const post = (url, data) => sendRequest(url, 'POST', data);
-// export const put = (url, data) => sendRequest(url, 'PUT', data);
-// export const del = (url) => sendRequest(url, 'DELETE');
-
-
 let accessToken = "";
 let refreshToken = "";
 let refreshingToken = false;
@@ -62,14 +6,21 @@ let lastResponse = "";
 export const setTokens = (newAccessToken, newRefreshToken) => {
   accessToken = newAccessToken;
   refreshToken = newRefreshToken;
+  localStorage.setItem('accessToken', newAccessToken);
+  localStorage.setItem('refreshToken', newRefreshToken);
 };
 
 const sendRequest = async (apiUrl, method, requestData, token) => {
   const headers = {
     "Content-Type": "application/json",
   };
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+
+  // Lấy token từ đối số hoặc localStorage
+  const authToken = token || localStorage.getItem('accessToken');
+
+  if (authToken) {
+    headers["Authorization"] = `Bearer ${authToken}`;
+    console.log('Authorization Header:', headers["Authorization"]);
   }
 
   const options = {
@@ -80,9 +31,9 @@ const sendRequest = async (apiUrl, method, requestData, token) => {
 
   const response = await fetch(apiUrl, options);
   const responseData = await response.text();
-  
+
   if (response.ok) {
-    lastResponse = responseData; // Update the last response
+    lastResponse = responseData; // Cập nhật phản hồi cuối cùng
     return responseData;
   } else {
     handleErrorResponse(response, responseData);
@@ -96,11 +47,11 @@ const handleErrorResponse = (response, errorResponse) => {
     case 400:
       throw new Error(errorResponse);
     case 403:
-      throw new Error(errorResponse);
+      throw new Error("Forbidden");
     case 404:
-      throw new Error(errorResponse);
+      throw new Error("Not Found");
     case 500:
-      throw new Error(errorResponse);
+      throw new Error("Server Error");
     default:
       throw new Error(`Failed: HTTP error code: ${response.status} - ${response.statusText} - ${errorResponse}`);
   }
@@ -122,9 +73,16 @@ const refreshAccessToken = async () => {
   refreshingToken = true;
   try {
     const apiUrl = "http://localhost:8080/api/auth/refresh";
-    const requestData = { refreshToken };
+    const storedRefreshToken = localStorage.getItem('refreshToken');
 
-    console.log(`Sending refresh token request with refreshToken: ${refreshToken}`);
+    if (!storedRefreshToken) {
+      console.error("No refresh token available in localStorage.");
+      return false;
+    }
+
+    const requestData = { refreshToken: storedRefreshToken };
+
+    console.log(`Sending refresh token request with refreshToken: ${storedRefreshToken}`);
     const response = await sendRequestWithoutToken(apiUrl, "POST", requestData);
     console.log(`Response from refresh token request: ${response}`);
 
@@ -134,7 +92,7 @@ const refreshAccessToken = async () => {
       const newAccessToken = jsonResponse.tokens.accessToken;
       const newRefreshToken = jsonResponse.tokens.refreshToken;
 
-      // Update accessToken and refreshToken
+      // Cập nhật accessToken và refreshToken
       setTokens(newAccessToken, newRefreshToken);
       console.log(`New accessToken: ${newAccessToken}`);
       console.log(`New refreshToken: ${newRefreshToken}`);
@@ -144,6 +102,17 @@ const refreshAccessToken = async () => {
       console.log("Refresh token response does not contain tokens.");
       return false;
     }
+  } catch (error) {
+    console.error("Error refreshing token:", error.message);
+    if (error.message.includes("Forbidden")) {
+      // Handle the forbidden error by forcing a logout or asking the user to re-login
+      console.error("Refresh token has expired or is invalid. Please log in again.");
+      // Clear stored tokens and redirect to login page if needed
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = "/login"; // Redirect to login page
+    }
+    return false;
   } finally {
     refreshingToken = false;
   }

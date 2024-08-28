@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Thay Switch bằng Routes
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -18,16 +18,24 @@ import AddMajor from './components/majors/create';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    // Kiểm tra trạng thái đăng nhập từ localStorage khi ứng dụng khởi động
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
 
   return (
-    <div className="app" style={{ background: '#f0f2f5' }}>
-      {!isLoggedIn ? (
-        <Login onLogin={handleLogin} />
-      ) : (
-        <Router>
+    <Router>
+      <div className="app" style={{ background: '#f0f2f5' }}>
+        {!isLoggedIn ? (
+          <Login onLogin={handleLogin} />
+        ) : (
           <>
             <Header />
             <Container fluid>
@@ -52,9 +60,9 @@ const App = () => {
               </Row>
             </Container>
           </>
-        </Router>
-      )}
-    </div>
+        )}
+      </div>
+    </Router>
   );
 };
 

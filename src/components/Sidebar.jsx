@@ -455,7 +455,7 @@ const Sidebar = () => {
     <div className="d-flex flex-column vh-100 bg-light">
       <ul className="nav flex-column p-3">
         <li className="nav-item">
-          <a href="/" className="nav-link text-dark">
+          <a href="/dashboard" className="nav-link text-dark">
             <FaHome className="me-2" /> Trang chủ
           </a>
         </li>

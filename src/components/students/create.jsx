@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './addUser.css';
+import { sendPost } from '../../utils/httpUtil'
 
 const AddUser = () => {
   const navigate = useNavigate();
@@ -32,11 +33,11 @@ const AddUser = () => {
   const handleAddUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/users/create-user', formData);
+      const response = await sendPost('http://localhost:8080/api/user/create-user', formData);
       alert('User added successfully');
       navigate('/users');
     } catch (err) {
-      alert('Error adding user: ' + err.message);
+      alert('Error adding user: ' + err);
     }
   };
 
