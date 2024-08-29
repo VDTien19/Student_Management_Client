@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { sendGet, sendPut } from '../../utils/httpUtil';
 import './EditMajor.css'; // Import CSS
 
-const EditMajor = ({ majorId, onClose }) => {
+const EditMajor = ({ majorId, onClose, onUpdateMajor }) => {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [error, setError] = useState(null);
@@ -11,12 +11,8 @@ const EditMajor = ({ majorId, onClose }) => {
   useEffect(() => {
     const fetchMajor = async () => {
       try {
-        const response = await axios.get(`/api/majors/${majorId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        const { name, code } = response.data.data;
+        const response = await sendGet(`http://localhost:8080/api/major/${majorId}`);
+        const { name, code } = JSON.parse(response).data;
         setName(name);
         setCode(code);
       } catch (err) {
@@ -30,16 +26,15 @@ const EditMajor = ({ majorId, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`/api/majors/update/${majorId}`, {
-        name,
-        code
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      setSuccess('Ngành học đã được cập nhật thành công!');
-      onClose();
+      const response = await sendPut(`http://localhost:8080/api/major/update/${majorId}`, { name, code });
+      const responseData = JSON.parse(response);
+      if (responseData && responseData.data) {
+        setSuccess('Ngành học đã được cập nhật thành công!');
+        onUpdateMajor(responseData.data);
+        onClose();
+      } else {
+        throw new Error(response);
+      }
     } catch (err) {
       setError('Lỗi khi cập nhật ngành học');
     }

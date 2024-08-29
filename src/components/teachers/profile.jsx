@@ -5,8 +5,8 @@ import './TeacherList.css';
 
 const TeacherList = () => {
   const [teacher, setTeacher] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
   const [searchId, setSearchId] = useState('');
 
   const fetchTeacher = async () => {
@@ -19,7 +19,6 @@ const TeacherList = () => {
     }
   };
 
-  
   
   const searchUserById = async (id) => {
     try {
