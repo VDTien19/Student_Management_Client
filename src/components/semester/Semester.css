@@ -1,0 +1,54 @@
+
+.semester-list-container {
+    margin: 20px;
+  }
+  
+  .semester-list-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .semester-list-container li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .semester-list-container button {
+    margin-right: 10px;
+  }
+  
+  .add-semester-container,
+  .edit-semester-container {
+    margin: 20px;
+  }
+  
+  .add-semester-form,
+  .edit-semester-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .submit-button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #45a049;
+  }
+  
