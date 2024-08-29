@@ -22,9 +22,9 @@ const UserList = () => {
     }
   };
 
-  const searchUserById = async (id) => {
+  const searchUserById = async (keyword) => {
     try {
-      const response = await sendGet(`http://localhost:8080/api/user/searchStudents`);
+      const response = await sendGet(`http://localhost:8080/api/user/searchStudents=${keyword}`);
       const userData = JSON.parse(response);
       if (userData.data) {
         setUsers([userData.data]);
@@ -100,11 +100,18 @@ const UserList = () => {
               <h3>{user.fullname}</h3>
               <p>Email: {user.email}</p>
               <p>MSV: {user.msv}</p>
-              <p>Class: {user.class}</p>
+              <p>
+                Class: 
+                {user.gvcn?.classrooms && user.gvcn.classrooms.length > 0 ? (
+                  user.gvcn.classrooms.map(classroom => classroom.name)
+                ) : (
+                  'N/A'
+                )}
+              </p>
               <p>Gender: {user.gender}</p>
               <p>Year: {user.year}</p>
-              <p>Major: {user.majorIds.map(major => major.name).join(', ')}</p>
-              <p>GVCN: {user.gvcn?.name || 'N/A'}</p>
+              <p>Major: {user.majorIds.map(major => major.name).join(' | ')}</p>
+              <p>GVCN: {user.gvcn?.fullname || 'N/A'}</p>
               <div className="button-group">
                 <button className="delete-btn" onClick={() => handleDeleteUser(user._id)}>Delete</button>
 
