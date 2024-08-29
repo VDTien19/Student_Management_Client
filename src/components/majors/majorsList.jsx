@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { sendGet, sendDelete } from '../../utils/httpUtil';
 import AddMajor from './create'; 
 import EditMajor from './update'; 
 import './MajorList.css';
@@ -14,12 +14,9 @@ const MajorList = () => {
   useEffect(() => {
     const fetchMajors = async () => {
       try {
-        const response = await axios.get('/api/majors/getAll', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        setMajors(response.data.data || []);
+        const response = await sendGet('http://localhost:8080/api/major/getAll');
+        const data = JSON.parse(response);
+        setMajors(data.data || []);
       } catch (err) {
         setError('Không thể lấy thông tin ngành học');
       } finally {
@@ -29,6 +26,14 @@ const MajorList = () => {
 
     fetchMajors();
   }, []);
+
+  const addMajorToList = (newMajor) => {
+    setMajors([...majors, newMajor]);
+  };
+
+  const updateMajorInList = (updatedMajor) => {
+    setMajors(majors.map(major => (major._id === updatedMajor._id ? updatedMajor : major)));
+  };
 
   const handleAddClick = () => {
     setShowAddForm(!showAddForm);
@@ -45,11 +50,7 @@ const MajorList = () => {
   const handleDeleteClick = async (id) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa ngành học này?')) {
       try {
-        await axios.delete(`/api/majors/delete/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        });
+        await sendDelete(`http://localhost:8080/api/major/delete/${id}`);
         setMajors(majors.filter((major) => major._id !== id));
       } catch (err) {
         setError('Lỗi khi xóa ngành học');
@@ -71,8 +72,8 @@ const MajorList = () => {
       <button onClick={handleAddClick}>
         {showAddForm ? 'Đóng' : 'Thêm Ngành Học'}
       </button>
-      {showAddForm && <AddMajor />}
-      {editMajorId && <EditMajor majorId={editMajorId} onClose={handleCloseEdit} />}
+      {showAddForm && <AddMajor onAddMajor={addMajorToList} />}
+      {editMajorId && <EditMajor majorId={editMajorId} onClose={handleCloseEdit} onUpdateMajor={updateMajorInList} />}
       <ul>
         {Array.isArray(majors) && majors.length > 0 ? (
           majors.map((major) => (
