@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { sendPost } from '../../utils/httpUtil';
 import './AddMajor.css';
 
-const AddMajor = () => {
-  // const navigate = useNavigate();
+const AddMajor = ({ onAddMajor }) => {
   const [formData, setFormData] = useState({
     name: '',
     code: '',
@@ -15,15 +14,18 @@ const AddMajor = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // console.log()
-
   const handleAddMajor = async (e) => {
     e.preventDefault();
     try {
       const response = await sendPost('http://localhost:8080/api/major/create', formData);
-      if (response.includes("Success")) {
+      const responseData = JSON.parse(response);
+      if (responseData && responseData.data) {
+        onAddMajor(responseData.data);
+        setFormData({
+          name: '',
+          code: '',
+        });
         alert('Major added successfully');
-        // navigate('/Majors');
       } else {
         throw new Error(response);
       }
