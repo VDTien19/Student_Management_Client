@@ -45,8 +45,10 @@ const AddUser = () => {
       try {
         const majorResponse = await sendGet('http://localhost:8080/api/major/getAll');
         const teacherResponse = await sendGet('http://localhost:8080/api/teacher/getAll');
-        setMajors(majorResponse.data || []);
-        setTeachers(teacherResponse.data || []);
+        const dataMajor = JSON.parse(majorResponse);
+        const dataTeacher = JSON.parse(teacherResponse);
+        setMajors(dataMajor.data || []);
+        setTeachers(dataTeacher.data || []);
       } catch (err) {
         console.error('Error fetching data:', err.message);
       }
