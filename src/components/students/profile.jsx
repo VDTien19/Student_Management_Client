@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { sendGet, sendDelete } from '../../utils/httpUtil'; // Sử dụng tiện ích HTTP đã được chia sẻ trước đó
 import './userList.css'; 
 
 const UserList = () => {
@@ -12,8 +12,9 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('/api/users/getAll');
-      setUsers(response.data.data || []);
+      const response = await sendGet('http://localhost:8080/api/user/getAll');
+      const usersData = JSON.parse(response);
+      setUsers(usersData.data || []);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -23,9 +24,10 @@ const UserList = () => {
 
   const searchUserById = async (id) => {
     try {
-      const response = await axios.get(`/api/users/${id}`);
-      if (response.data.data) {
-        setUsers([response.data.data]);
+      const response = await sendGet(`http://localhost:8080/api/user/${id}`);
+      const userData = JSON.parse(response);
+      if (userData.data) {
+        setUsers([userData.data]);
       } else {
         alert('User not found');
       }
@@ -36,10 +38,9 @@ const UserList = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('/api/users/me', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
-      setCurrentUser(response.data.data);
+      const response = await sendGet('http://localhost:8080/api/user/me');
+      const currentUserData = JSON.parse(response);
+      setCurrentUser(currentUserData.data);
     } catch (err) {
       console.error('Error fetching current user: ', err);
     }
@@ -47,7 +48,7 @@ const UserList = () => {
 
   useEffect(() => {
     fetchUsers();
-    fetchCurrentUser(); 
+    fetchCurrentUser();
   }, []);
 
   const handleSearch = (e) => {
@@ -64,7 +65,7 @@ const UserList = () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`/api/users/delete/${id}`);
+      await sendDelete(`http://localhost:8080/api/user/delete/${id}`);
       alert('User deleted successfully');
       setUsers(users.filter(user => user._id !== id));
     } catch (err) {

@@ -19,7 +19,6 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Kiểm tra trạng thái đăng nhập từ localStorage khi ứng dụng khởi động
     const token = localStorage.getItem('accessToken');
     if (token) {
       setIsLoggedIn(true);
@@ -30,6 +29,10 @@ const App = () => {
     setIsLoggedIn(true);
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
   return (
     <Router>
       <div className="app" style={{ background: '#f0f2f5' }}>
@@ -37,7 +40,7 @@ const App = () => {
           <Login onLogin={handleLogin} />
         ) : (
           <>
-            <Header />
+            <Header onLogout={handleLogout} />
             <Container fluid>
               <Row>
                 <Col className="p-0" xs={2}>

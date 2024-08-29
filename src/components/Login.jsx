@@ -3,7 +3,7 @@
 // import { Form, Button, Alert } from 'react-bootstrap';
 // import { useNavigate } from 'react-router-dom';
 
-// const Login = () => {
+// const Login = ({ onLogin }) => {
 //   const [username, setUsername] = useState('');
 //   const [password, setPassword] = useState('');
 //   const [error, setError] = useState('');
@@ -20,8 +20,10 @@
 //       // Lưu token vào localStorage hoặc state management
 //       localStorage.setItem('accessToken', response.data.tokens.accessToken);
 //       localStorage.setItem('refreshToken', response.data.tokens.refreshToken);
+//       // Gọi onLogin từ props để cập nhật trạng thái đăng nhập
+//       onLogin();
 //       // Chuyển hướng đến trang chính
-//       navigate('/dashboard')
+//       navigate('/dashboard');
 //     } catch (err) {
 //       setSuccess('');
 //       setError(err.response?.data?.message || 'Đăng nhập thất bại!');
@@ -68,7 +70,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
@@ -76,25 +78,27 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post('http://localhost:8080/api/auth/login', { username, password });
       setSuccess('Đăng nhập thành công!');
       setError('');
-      
-      // Lưu token vào localStorage hoặc state management
+
       localStorage.setItem('accessToken', response.data.tokens.accessToken);
       localStorage.setItem('refreshToken', response.data.tokens.refreshToken);
-      // Gọi onLogin từ props để cập nhật trạng thái đăng nhập
+      
       onLogin();
-      // Chuyển hướng đến trang chính
       navigate('/dashboard');
     } catch (err) {
       setSuccess('');
       setError(err.response?.data?.message || 'Đăng nhập thất bại!');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -112,6 +116,7 @@ const Login = ({ onLogin }) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            disabled={loading}
           />
         </Form.Group>
 
@@ -123,11 +128,12 @@ const Login = ({ onLogin }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit" className="w-100">
-          Login
+        <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+          {loading ? <Spinner animation="border" size="sm" /> : 'Login'}
         </Button>
       </Form>
     </div>
