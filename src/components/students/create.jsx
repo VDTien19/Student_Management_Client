@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './addUser.css';
-import { sendPost } from '../../utils/httpUtil'
+import { sendPost, sendGet } from '../../utils/httpUtil';
 
 const AddUser = () => {
   const navigate = useNavigate();
@@ -33,23 +32,23 @@ const AddUser = () => {
   const handleAddUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await sendPost('http://localhost:8080/api/user/create-user', formData);
+      await sendPost('http://localhost:8080/api/user/create-user', formData);
       alert('User added successfully');
       navigate('/users');
     } catch (err) {
-      alert('Error adding user: ' + err);
+      alert('Error adding user: ' + err.message);
     }
   };
 
   useEffect(() => {
     const fetchMajorsAndTeachers = async () => {
       try {
-        const majorResponse = await axios.get('/api/majors');
-        const teacherResponse = await axios.get('/api/teachers');
-        setMajors(majorResponse.data.data || []);
-        setTeachers(teacherResponse.data.data || []);
+        const majorResponse = await sendGet('http://localhost:8080/api/major/getAll');
+        const teacherResponse = await sendGet('http://localhost:8080/api/teacher/getAll');
+        setMajors(majorResponse.data || []);
+        setTeachers(teacherResponse.data || []);
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.error('Error fetching data:', err.message);
       }
     };
     fetchMajorsAndTeachers();

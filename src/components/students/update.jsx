@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { sendGet, sendPut } from '../../utils/httpUtil'; // Sử dụng tiện ích HTTP đã được chia sẻ trước đó
 
 const UserProfileUpdate = () => {
   const [formData, setFormData] = useState({
@@ -12,11 +12,17 @@ const UserProfileUpdate = () => {
   });
 
   useEffect(() => {
-    axios.get(`/api/user/${localStorage.getItem('userId')}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    })
-    .then((res) => setFormData(res.data.data))
-    .catch((err) => console.error(err));
+    const fetchUserProfile = async () => {
+      try {
+        const response = await sendGet(`http://localhost:8080/api/user/${localStorage.getItem('userId')}`);
+        const userData = JSON.parse(response);
+        setFormData(userData.data);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    fetchUserProfile();
   }, []);
 
   const handleChange = (e) => {
@@ -24,13 +30,14 @@ const UserProfileUpdate = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.put(`/api/user/updateProfile/${localStorage.getItem('userId')}`, formData, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    })
-    .then((res) => alert('Profile updated successfully!'))
-    .catch((err) => console.error(err));
+    try {
+      await sendPut(`http://localhost:8080/api/user/updateProfile/${localStorage.getItem('userId')}`, formData);
+      alert('Profile updated successfully!');
+    } catch (err) {
+      console.error('Error updating profile: ', err.message);
+    }
   };
 
   return (

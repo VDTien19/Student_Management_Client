@@ -1,40 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { sendGet } from '../../utils/httpUtil'; // Updated import
 import './TeacherList.css';
 
 const TeacherList = () => {
-  const [teachers, setTeachers] = useState([]);
+  const [teacher, setTeacher] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchId, setSearchId] = useState('');
 
-  const fetchTeachers = async () => {
+  const fetchTeacher = async () => {
     try {
-      const response = await axios.get('/api/teachers/getAll');
-      setTeachers(response.data.data || []);
+      const response = await sendGet('http://localhost:8080/api/teacher/getAll');
+      console.log(response.data)
+      setTeacher(response.data || []);
       setLoading(false);
     } catch (err) {
       setError(err.message);
       setLoading(false);
     }
   };
-
+  
+  
   const searchUserById = async (id) => {
     try {
-      const response = await axios.get(`/api/teachers/${id}`);
-      if (response.data.data) {
-        setUsers([response.data.data]);
+      const response = await sendGet(`http://localhost:8080/api/teacher/${id}`);
+      if (response.data) {
+        setTeacher([response.data]);
       } else {
-        alert('User not found');
+        alert('Teacher not found');
       }
     } catch (err) {
-      alert('Error fetching user: ' + err.message);
+      alert('Error fetching teacher: ' + err.message);
     }
   };
+  
 
   useEffect(() => {
-    fetchTeachers();
+    fetchTeacher();
   }, []);
 
   const handleSearch = (e) => {
@@ -64,11 +67,11 @@ const TeacherList = () => {
       <Link to="/teachers/add" className="add-button">
         <button>Add Teacher</button>
       </Link>
-      {Array.isArray(teachers) && teachers.length === 0 ? (
+      {teacher.length === 0 ? (
         <p>No teachers found</p>
       ) : (
         <ul className="teacher-items">
-          {Array.isArray(teachers) && teachers.map(teacher => (
+          {teacher.map(teacher => (
             <li key={teacher._id} className="teacher-item">
               <h3>{teacher.fullname}</h3>
               <p>MGV: {teacher.mgv}</p>
