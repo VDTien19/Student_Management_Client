@@ -20,7 +20,7 @@ const sendRequest = async (apiUrl, method, requestData, token) => {
 
   if (authToken) {
     headers["Authorization"] = `Bearer ${authToken}`;
-    console.log('Authorization Header:', headers["Authorization"]);
+    // console.log('Authorization Header:', headers["Authorization"]);
   }
 
   const options = {
