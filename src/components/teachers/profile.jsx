@@ -20,14 +20,15 @@ const TeacherList = () => {
   };
 
   
-  const searchUserById = async (id) => {
+  const searchUserByMGV = async (mgv) => {
     try {
-      const response = await sendGet(`http://localhost:8080/api/teacher/${id}`);
-      if (response.data) {
-        setTeacher([response.data]);
-      } else {
-        alert('Teacher not found');
-      }
+      const response = await sendGet(`http://localhost:8080/api/teacher/search/${mgv}`);
+        if (response && response.data) {
+          setTeacher([response.data]);
+        } else {
+          alert('Teacher not found');
+        }
+
     } catch (err) {
       alert('Error fetching teacher: ' + err.message);
     }
@@ -41,9 +42,9 @@ const TeacherList = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchId.trim()) {
-      searchUserById(searchId);
+      searchUserByMGV(searchId);
     } else {
-      alert('Please enter a valid teacher ID');
+      alert('Please enter a valid teacher MGV');
     }
   };
 

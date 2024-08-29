@@ -24,7 +24,7 @@ const UserList = () => {
 
   const searchUserById = async (id) => {
     try {
-      const response = await sendGet(`http://localhost:8080/api/user/${id}`);
+      const response = await sendGet(`http://localhost:8080/api/user/searchStudents`);
       const userData = JSON.parse(response);
       if (userData.data) {
         setUsers([userData.data]);
@@ -108,11 +108,9 @@ const UserList = () => {
               <div className="button-group">
                 <button className="delete-btn" onClick={() => handleDeleteUser(user._id)}>Delete</button>
 
-                {(currentUser && currentUser.role === 'admin') || currentUser?._id === user._id ? (
                   <Link to={`/users/edit/${user._id}`}>
                     <button className="edit-btn">Edit</button>
                   </Link>
-                ) : null}
               </div>
             </li>
           ))}
