@@ -38,7 +38,7 @@ const UserList = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await sendGet('http://localhost:8080/api/user/me');
+      const response = await sendGet('http://localhost:8080/api/user/getAll');
       const currentUserData = JSON.parse(response);
       setCurrentUser(currentUserData.data);
     } catch (err) {

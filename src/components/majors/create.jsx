@@ -1,59 +1,70 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import './AddMajor.css'; // Import CSS
+import { useNavigate } from 'react-router-dom';
+import { sendPost } from '../../utils/httpUtil';
+import './AddMajor.css';
 
-const AddMajor = () => {
-  const [name, setName] = useState('');
-  const [code, setCode] = useState('');
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+const AddMajor = ({ onAddMajor }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    code: '',
+  });
 
-  const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleAddMajor = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/majors/create', {
-        name,
-        code
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      setSuccess('Ngành học đã được thêm thành công!');
-      setName('');
-      setCode('');
+      const response = await sendPost('http://localhost:8080/api/major/create', formData);
+      const responseData = JSON.parse(response);
+      if (responseData && responseData.data) {
+        onAddMajor(responseData.data);
+        setFormData({
+          name: '',
+          code: '',
+        });
+        alert('Major added successfully');
+      } else {
+        throw new Error(response);
+      }
     } catch (err) {
-      setError('Lỗi khi thêm ngành học');
+      alert('Error adding major: ' + err.message);
     }
   };
 
   return (
-    <div className="add-major-container">
-      <h1>Thêm Ngành Học</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Tên Ngành Học:</label>
+    <div className="add-Major-container">
+      <h2>Add New Major</h2>
+      <form onSubmit={handleAddMajor} className="add-Major-form">
+        <div className="form-group">
+          <label htmlFor="name">Major Name:</label>
           <input
-            type="text"
             id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="code">Mã Ngành:</label>
-          <input
             type="text"
-            id="code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <button type="submit">Thêm Ngành Học</button>
+        <div className="form-group">
+          <label htmlFor="code">Major Code:</label>
+          <input
+            id="code"
+            type="text"
+            name="code"
+            value={formData.code}
+            onChange={handleChange}
+            required
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <button type="submit" className="submit-button">Add Major</button>
+        </div>
       </form>
     </div>
   );
