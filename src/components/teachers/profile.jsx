@@ -5,22 +5,19 @@ import './TeacherList.css';
 
 const TeacherList = () => {
   const [teacher, setTeacher] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
   const [searchId, setSearchId] = useState('');
 
   const fetchTeacher = async () => {
     try {
       const response = await sendGet('http://localhost:8080/api/teacher/getAll');
-      console.log(response.data)
-      setTeacher(response.data || []);
-      setLoading(false);
+      const currentTeacherData = JSON.parse(response);
+      setTeacher(currentTeacherData.data);
     } catch (err) {
-      setError(err.message);
-      setLoading(false);
+      console.error('Error fetching current user: ', err);
     }
   };
-  
   
   const searchUserById = async (id) => {
     try {
@@ -49,8 +46,8 @@ const TeacherList = () => {
     }
   };
 
-  if (loading) return <p className="loading">Loading...</p>;
-  if (error) return <p className="error">Error: {error}</p>;
+  // if (loading) return <p className="loading">Loading...</p>;
+  // if (error) return <p className="error">Error: {error}</p>;
 
   return (
     <div className="teacher-list">
