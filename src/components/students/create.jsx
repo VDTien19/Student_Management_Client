@@ -31,6 +31,11 @@ const AddUser = () => {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
+    if (!formData.gvcn) {
+      alert('Please select a teacher.');
+      return;
+    }
+  
     try {
       await sendPost('http://localhost:8080/api/user/create-user', formData);
       alert('User added successfully');
@@ -39,6 +44,7 @@ const AddUser = () => {
       alert('Error adding user: ' + err.message);
     }
   };
+  
 
   useEffect(() => {
     const fetchMajorsAndTeachers = async () => {
@@ -57,7 +63,7 @@ const AddUser = () => {
   return (
     <div className="add-user">
       <form onSubmit={handleAddUser}>
-        <div className="form-group">
+      <div className="form-group">
           <label>Full Name:</label>
           <input
             type="text"
@@ -126,9 +132,9 @@ const AddUser = () => {
             onChange={handleChange}
           >
             <option value="">Select a teacher</option>
-            {Array.isArray(teachers) && teachers.map(teacher => (
+            {Array.isArray(teacher) && teacher.map(teacher => (
               <option key={teacher._id} value={teacher._id}>
-                {teacher.name}
+                {teacher.fullname} (MGV: {teacher.mgv})
               </option>
             ))}
           </select>
@@ -141,7 +147,7 @@ const AddUser = () => {
             value={formData.majorIds}
             onChange={handleSelectMajor}
           >
-            {Array.isArray(majors) && majors.map(major => (
+            {Array.isArray(major) && major.map(major => (
               <option key={major._id} value={major._id}>
                 {major.name}
               </option>
