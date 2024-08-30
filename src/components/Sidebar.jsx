@@ -460,18 +460,13 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a href="/khoa" className="nav-link text-dark">
-            <FaListAlt className="me-2" /> Khoa
-          </a>
-        </li>
-        <li className="nav-item">
-          <a href="/lop" className="nav-link text-dark">
-            <FaUsers className="me-2" /> Lớp
+          <a href="/class" className="nav-link text-dark">
+            <FaUsers className="me-2" /> Quản lý lớp học
           </a>
         </li>
         <li className="nav-item">
           <a href="/users" className="nav-link text-dark">
-            <FaUsers className="me-2" /> Sinh viên
+            <FaUsers className="me-2" /> Quản lý sinh viên
           </a>
         </li>
         <li className="nav-item">
@@ -485,7 +480,7 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a href="/qldiem" className="nav-link text-dark">
+          <a href="/courses" className="nav-link text-dark">
             <FaClipboardCheck className="me-2" /> Quản lý điểm
           </a>
         </li>
@@ -495,18 +490,8 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a href="/thanhvien" className="nav-link text-dark">
-            <FaUsers className="me-2" /> Thành viên
-          </a>
-        </li>
-        <li className="nav-item">
-          <a href="/vaitrothanhvien" className="nav-link text-dark">
-            <FaUsers className="me-2" /> Vai trò thành viên
-          </a>
-        </li>
-        <li className="nav-item">
-          <a href="/baiviet" className="nav-link text-dark">
-            <FaBook className="me-2" /> Bài viết
+          <a href="/semesters" className="nav-link text-dark">
+            <FaClipboardCheck className="me-2" /> Quản lý học kỳ
           </a>
         </li>
         <li className="nav-item">
