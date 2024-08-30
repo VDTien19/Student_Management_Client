@@ -59,7 +59,7 @@ const App = () => {
                     <Route path="/edit-course/:id" element={<EditCourse />} />
                     <Route path="/majors" element={<MajorList />} />
                     <Route path="/add-major" element={<AddMajor />} />
-                    <Route path="/semester" element={<SemesterList/>}></Route>
+                    <Route path="/semesters" element={<SemesterList/>}></Route>
                   </Routes>
                 </Col>
               </Row>
