@@ -75,9 +75,7 @@ const TeacherList = () => {
               <h3>{teacher.fullname}</h3>
               <p>MGV: {teacher.mgv}</p>
               <p>
-                Class: {teacher.classrooms.length > 0
-                  ? teacher.classrooms.map(classroom => classroom.name).join(', ')
-                  : 'N/A'}
+                Class: {teacher.classrooms?.name}
               </p>
             </li>
           ))}

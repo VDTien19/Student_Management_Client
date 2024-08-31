@@ -102,11 +102,7 @@ const UserList = () => {
               <p>MSV: {user.msv}</p>
               <p>
                 Class: 
-                {user.gvcn?.classrooms && user.gvcn.classrooms.length > 0 ? (
-                  user.gvcn.classrooms.map(classroom => classroom.name)
-                ) : (
-                  'N/A'
-                )}
+                {user.gvcn?.classrooms ? user.gvcn?.classrooms.name : 'N/A'}
               </p>
               <p>Gender: {user.gender}</p>
               <p>Year: {user.year}</p>
