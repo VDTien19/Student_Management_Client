@@ -16,6 +16,13 @@ import MajorList from './components/majors/majorsList';
 import AddMajor from './components/majors/create';
 import SemesterList from './components/semester/SemesterList';
 import ClassroomList from './components/classrooms/ClassroomList';
+import GradeList from './components/grades/GradeList';
+import AddGrade from './components/grades/create';
+import UpdateGrade from './components/grades/update';
+import AdminUpdateUser from './components/students/AdminUpdate';
+import TranscriptList from './components/transcript/transcript';
+import AddTranscipt from './components/transcript/createTranscript';
+import UpdateTranscript from './components/transcript/updateTranscript.Jsx';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +59,7 @@ const App = () => {
                   <Routes>
                     <Route path="/users" element={<UserList />} />
                     <Route path="/users/edit/:id" element={<UserEdit />} />
+                    <Route path="/users/edit/admin/:id" element={<AdminUpdateUser />} />
                     <Route path="/users/add" element={<AddUser />} />
                     <Route path="/teachers" element={<TeacherList />} />
                     <Route path="/teachers/add" element={<AddTeacher />} />
@@ -62,6 +70,12 @@ const App = () => {
                     <Route path="/add-major" element={<AddMajor />} />
                     <Route path="/semesters" element={<SemesterList/>}></Route>
                     <Route path="/class" element={<ClassroomList/>}></Route>
+                    <Route path="/grades" element={<GradeList />} />
+                    <Route path="/add-grades" element={<AddGrade />} />
+                    <Route path="/update-grade/:id" element={<UpdateGrade />} />
+                    <Route path="/transcript" element={<TranscriptList />} />
+                    <Route path="/add-transcript" element={<AddTranscipt />} />
+                    <Route path="/update-transcript/:id" element={<UpdateTranscript />} />
                   </Routes>
                 </Col>
               </Row>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { sendGet, sendDelete } from '../../utils/httpUtil'; // Sử dụng tiện ích HTTP đã được chia sẻ trước đó
+import { sendGet, sendDelete } from '../../utils/httpUtil';
 import './userList.css'; 
 
 const UserList = () => {
@@ -73,8 +73,6 @@ const UserList = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="user-list">
@@ -111,9 +109,15 @@ const UserList = () => {
               <div className="button-group">
                 <button className="delete-btn" onClick={() => handleDeleteUser(user._id)}>Delete</button>
 
-                  <Link to={`/users/edit/${user._id}`}>
+                {currentUser && currentUser.isAdmin ? (
+                  <Link to={`/users/edit/admin/${user._id}`}>
                     <button className="edit-btn">Edit</button>
                   </Link>
+                ) : currentUser && currentUser.isGv ? (
+                  <Link to={`/users/edit/user/${user._id}`}>
+                    <button className="edit-btn">Edit</button>
+                  </Link>
+                ) : null}
               </div>
             </li>
           ))}

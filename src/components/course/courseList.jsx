@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Table, Container, Alert, Spinner, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { sendGet, sendDelete } from '../../utils/httpUtil';
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -16,15 +16,10 @@ const CourseList = () => {
   const fetchCourses = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('/getAll', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      setCourses(response.data.data || []); // Đảm bảo rằng courses là mảng
+      const response = await sendGet('http://localhost:8080/api/course/getAll');
+      setCourses(response.data?.data || []);
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      setError(err.message || 'Failed to fetch courses');
     } finally {
       setLoading(false);
     }
@@ -33,16 +28,11 @@ const CourseList = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this course?')) {
       try {
-        await axios.delete(`/delete/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-
+        await sendDelete(`http://localhost:8080/api/course/delete/${id}`);
         setDeleteMessage('Course deleted successfully!');
         fetchCourses();
       } catch (err) {
-        setError(err.response?.data?.message || err.message);
+        setError(err.message || 'Failed to delete the course');
       }
     }
   };

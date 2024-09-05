@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
+import { sendPost } from '../../utils/httpUtil';
 
 const AddCourse = () => {
   const [name, setName] = useState('');
@@ -14,31 +14,26 @@ const AddCourse = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/add-course', {
+      const response = await sendPost('http://localhost:8080/api/course/add-course', {
         name,
         code,
         credit,
-        majorId
-      }, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        majorId,
       });
 
-      setMessage(response.data.message);
-      // Reset form fields
+      setMessage(response.message);
       setName('');
       setCode('');
       setCredit('');
       setMajorId('');
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      setError(err.message || 'Failed to add course');
     }
   };
 
   return (
     <Container className="mt-5">
-      <h1>Thêm môn học</h1>
+      <h1>Add Course</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formCourseName">
           <Form.Label>Course Name</Form.Label>
