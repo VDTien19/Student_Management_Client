@@ -495,8 +495,8 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a href="/dieukhoan" className="nav-link text-dark">
-            <FaListAlt className="me-2" /> Điều khoản
+          <a href="/diligence" className="nav-link text-dark">
+            <FaListAlt className="me-2" /> Quản lý chuyên cần
           </a>
         </li>
       </ul>
