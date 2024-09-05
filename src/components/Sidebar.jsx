@@ -480,7 +480,7 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a href="/courses" className="nav-link text-dark">
+          <a href="/grades" className="nav-link text-dark">
             <FaClipboardCheck className="me-2" /> Quản lý điểm
           </a>
         </li>

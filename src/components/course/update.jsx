@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Alert, Spinner } from 'react-bootstrap';
+import { sendGet, sendPut } from '../../utils/httpUtil'; // Adjust the import path as needed
 
 const EditCourse = () => {
   const { id } = useParams();
@@ -12,27 +12,21 @@ const EditCourse = () => {
   const [code, setCode] = useState('');
   const [credit, setCredit] = useState('');
   const [majorId, setMajorId] = useState('');
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
 
-  // Fetch thông tin môn học theo id khi component mount
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await axios.get(`/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-
-        setCourse(response.data.data);
-        setName(response.data.data.name);
-        setCode(response.data.data.code);
-        setCredit(response.data.data.credit);
-        setMajorId(response.data.data.majorId?._id || '');
+        const response = await sendGet(`http://localhost:8080/api/course/${id}`);
+        
+        setCourse(response.data);
+        setName(response.data.name);
+        setCode(response.data.code);
+        setCredit(response.data.credit);
+        setMajorId(response.data.majorId?._id || '');
       } catch (err) {
-        setError(err.response?.data?.message || err.message);
+        setError(err.message || 'Failed to fetch course details');
       } finally {
         setLoading(false);
       }
@@ -45,15 +39,11 @@ const EditCourse = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`/update/${id}`, {
+      const response = await sendPut(`http://localhost:8080/api/course/update/${id}`, {
         name,
         code,
         credit,
         majorId
-      }, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
       });
 
       setMessage('Course updated successfully!');
@@ -61,32 +51,14 @@ const EditCourse = () => {
         navigate('/');
       }, 2000); 
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      setError(err.message || 'Failed to update course');
     }
   };
 
-  if (loading) {
-    return (
-      <Container className="text-center mt-5">
-        <Spinner animation="border" />
-        <p>Loading...</p>
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container className="mt-5">
-        <Alert variant="danger">
-          <p>Error: {error}</p>
-        </Alert>
-      </Container>
-    );
-  }
 
   return (
     <Container className="mt-5">
-      <h1>sửa môn học</h1>
+      <h1>Edit Course</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formCourseName">
           <Form.Label>Course Name</Form.Label>
