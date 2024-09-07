@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { sendGet, sendDelete } from '../../utils/httpUtil';
+import { sendGet, sendDelete, sendPost } from '../../utils/httpUtil';
 import './userList.css'; 
 
 const UserList = () => {
@@ -24,7 +24,7 @@ const UserList = () => {
 
   const searchUserById = async (keyword) => {
     try {
-      const response = await sendGet(`http://localhost:8080/api/user/searchStudents=${keyword}`);
+      const response = await sendPost('http://localhost:8080/api/user/searchStudents', { keyword });
       const userData = JSON.parse(response);
       if (userData.data) {
         setUsers([userData.data]);
@@ -35,6 +35,7 @@ const UserList = () => {
       alert('Error fetching user: ' + err.message);
     }
   };
+  
 
   const fetchCurrentUser = async () => {
     try {

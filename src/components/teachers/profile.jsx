@@ -5,8 +5,6 @@ import './TeacherList.css';
 
 const TeacherList = () => {
   const [teacher, setTeacher] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
   const [searchId, setSearchId] = useState('');
 
   const fetchTeacher = async () => {
@@ -15,25 +13,25 @@ const TeacherList = () => {
       const currentTeacherData = JSON.parse(response);
       setTeacher(currentTeacherData.data);
     } catch (err) {
-      console.error('Error fetching current user: ', err);
+      console.error('Error fetching teachers: ', err);
     }
   };
 
-  
   const searchUserByMGV = async (mgv) => {
     try {
-      const response = await sendGet(`http://localhost:8080/api/teacher/search/${mgv}`);
-        if (response && response.data) {
-          setTeacher([response.data]);
-        } else {
-          alert('Teacher not found');
-        }
+      // Update the search URL to use the GET /:teacherId route
+      const response = await sendGet(`http://localhost:8080/api/teacher/${mgv}`);
+      const teacherData = JSON.parse(response);
 
+      if (teacherData && teacherData.data) {
+        setTeacher([teacherData.data]); // Set the single teacher found
+      } else {
+        alert('Teacher not found');
+      }
     } catch (err) {
       alert('Error fetching teacher: ' + err.message);
     }
   };
-  
 
   useEffect(() => {
     fetchTeacher();
@@ -48,16 +46,13 @@ const TeacherList = () => {
     }
   };
 
-  // if (loading) return <p className="loading">Loading...</p>;
-  // if (error) return <p className="error">Error: {error}</p>;
-
   return (
     <div className="teacher-list">
       <h2>Danh sách giảng viên</h2>
       <form onSubmit={handleSearch} className="search-form">
         <input
           type="text"
-          placeholder="Search by Teacher ID"
+          placeholder="Search by Teacher MGV"
           value={searchId}
           onChange={(e) => setSearchId(e.target.value)}
         />
@@ -75,7 +70,7 @@ const TeacherList = () => {
               <h3>{teacher.fullname}</h3>
               <p>MGV: {teacher.mgv}</p>
               <p>
-                Class: {teacher.classrooms?.name}
+                Class: {teacher.classrooms?.name || 'No class assigned'}
               </p>
             </li>
           ))}

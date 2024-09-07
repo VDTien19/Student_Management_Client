@@ -23,6 +23,10 @@ import AdminUpdateUser from './components/students/AdminUpdate';
 import TranscriptList from './components/transcript/transcript';
 import AddTranscipt from './components/transcript/createTranscript';
 import UpdateTranscript from './components/transcript/updateTranscript.Jsx';
+import DiligencyList from './components/diligency/diligency';
+import DiligencyCreate from './components/diligency/createDiligency';
+import DiligencyUpdate from './components/diligency/updateDiligency';
+import HomePage from './components/Homepage';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,6 +61,7 @@ const App = () => {
                 </Col>
                 <Col xs={10}>
                   <Routes>
+                    <Route path="/dashboard" element={<HomePage />} />
                     <Route path="/users" element={<UserList />} />
                     <Route path="/users/edit/:id" element={<UserEdit />} />
                     <Route path="/users/edit/admin/:id" element={<AdminUpdateUser />} />
@@ -76,6 +81,9 @@ const App = () => {
                     <Route path="/transcript" element={<TranscriptList />} />
                     <Route path="/add-transcript" element={<AddTranscipt />} />
                     <Route path="/update-transcript/:id" element={<UpdateTranscript />} />
+                    <Route path="/diligency" element={<DiligencyList />} />
+                    <Route path="/add-diligency" element={<DiligencyCreate />} />
+                    <Route path="/update-diligency/:id" element={<DiligencyUpdate />} />
                   </Routes>
                 </Col>
               </Row>

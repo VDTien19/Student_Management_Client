@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { sendPost } from '../../utils/httpUtil'; // Adjust the path to your API utility file
+import React, { useState, useEffect } from 'react';
+import { sendPost, sendGet } from '../../utils/httpUtil'; // Adjust the path to your API utility file
 import { useNavigate } from 'react-router-dom';
 
 const AddGrade = () => {
@@ -7,9 +7,38 @@ const AddGrade = () => {
   const [midScore, setMidScore] = useState('');
   const [finalScore, setFinalScore] = useState('');
   const [transcriptId, setTranscriptId] = useState('');
+  const [courses, setCourses] = useState([]);
+  const [transcripts, setTranscripts] = useState([]);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch courses
+    const fetchCourses = async () => {
+      try {
+        const response = await sendGet('http://localhost:8080/api/course/getAll');
+        const data = JSON.parse(response);
+        setCourses(data.data);
+      } catch (err) {
+        console.error('Error fetching courses:', err);
+      }
+    };
+
+    // Fetch transcripts
+    const fetchTranscripts = async () => {
+      try {
+        const response = await sendGet('http://localhost:8080/api/transcript/getAll');
+        const data = JSON.parse(response);
+        setTranscripts(data.data);
+      } catch (err) {
+        console.error('Error fetching transcripts:', err);
+      }
+    };
+
+    fetchCourses();
+    fetchTranscripts();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +53,7 @@ const AddGrade = () => {
     };
 
     try {
-      const response = await sendPost('http://localhost:8080/api/grade/create', requestData);
+      await sendPost('http://localhost:8080/api/grade/create', requestData);
       setSuccess('Grade added successfully!');
       navigate('/grades');
     } catch (err) {
@@ -40,15 +69,21 @@ const AddGrade = () => {
       {success && <div className="alert alert-success">{success}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="courseId">Course ID</label>
-          <input
-            type="text"
-            className="form-control"
+          <label htmlFor="courseId">Course</label>
+          <select
             id="courseId"
+            className="form-control"
             value={courseId}
             onChange={(e) => setCourseId(e.target.value)}
             required
-          />
+          >
+            <option value="">Select Course</option>
+            {courses.map((course) => (
+              <option key={course._id} value={course._id}>
+                {course.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="midScore">Mid Score</label>
@@ -79,15 +114,21 @@ const AddGrade = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="transcriptId">Transcript ID</label>
-          <input
-            type="text"
-            className="form-control"
+          <label htmlFor="transcriptId">Transcript</label>
+          <select
             id="transcriptId"
+            className="form-control"
             value={transcriptId}
             onChange={(e) => setTranscriptId(e.target.value)}
             required
-          />
+          >
+            <option value="">Select Transcript</option>
+            {transcripts.map((transcript) => (
+              <option key={transcript._id} value={transcript._id}>
+                {transcript.studentName} - {transcript.year}
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit" className="btn btn-primary">
           Add Grade
