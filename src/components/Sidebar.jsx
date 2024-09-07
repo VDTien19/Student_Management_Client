@@ -495,6 +495,16 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="nav-item">
+          <a href="/diligency" className="nav-link text-dark">
+            <FaClipboardCheck className="me-2" /> Quản lý chuyên cần
+          </a>
+        </li>
+        <li className="nav-item">
+          <a href="/transcript" className="nav-link text-dark">
+            <FaClipboardCheck className="me-2" /> Quản lý bảng điểm
+          </a>
+        </li>
+        <li className="nav-item">
           <a href="/dieukhoan" className="nav-link text-dark">
             <FaListAlt className="me-2" /> Điều khoản
           </a>

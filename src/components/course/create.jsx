@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import { sendPost } from '../../utils/httpUtil';
+import { sendPost, sendGet } from '../../utils/httpUtil';
 
 const AddCourse = () => {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [credit, setCredit] = useState('');
   const [majorId, setMajorId] = useState('');
+  const [majors, setMajors] = useState([]); // To store the list of majors
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+
+  // Fetch the list of majors when the component mounts
+  useEffect(() => {
+    const fetchMajors = async () => {
+      try {
+        const response = await sendGet('http://localhost:8080/api/major/getAll'); // Adjust API URL as needed
+        const data = JSON.parse(response);
+        setMajors(data.data); // Assuming response data contains an array of majors
+      } catch (err) {
+        console.error('Failed to fetch majors:', err);
+        setError('Failed to fetch majors');
+      }
+    };
+
+    fetchMajors();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,14 +86,20 @@ const AddCourse = () => {
         </Form.Group>
 
         <Form.Group controlId="formMajorId">
-          <Form.Label>Major ID</Form.Label>
+          <Form.Label>Major</Form.Label>
           <Form.Control
-            type="text"
-            placeholder="Enter major ID"
+            as="select" // Changed to a select dropdown
             value={majorId}
             onChange={(e) => setMajorId(e.target.value)}
             required
-          />
+          >
+            <option value="">Select Major</option>
+            {majors.map((major) => (
+              <option key={major._id} value={major._id}>
+                {major.name}
+              </option>
+            ))}
+          </Form.Control>
         </Form.Group>
 
         <Button variant="primary" type="submit">
