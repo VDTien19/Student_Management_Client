@@ -1,126 +1,156 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Alert, Spinner } from 'react-bootstrap';
-import { sendGet, sendPut } from '../../utils/httpUtil'; // Adjust the import path as needed
+import { sendGet, sendPut } from '../../utils/httpUtil';
 
-const EditCourse = () => {
+const EditCourse = ({ onClose, onUpdateCourse }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [course, setCourse] = useState(null);
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [credit, setCredit] = useState('');
   const [majorId, setMajorId] = useState('');
+  const [majors, setMajors] = useState([]); 
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
+    // Fetch course data
     const fetchCourse = async () => {
       try {
         const response = await sendGet(`http://localhost:8080/api/course/${id}`);
-        
-        setCourse(response.data);
-        setName(response.data.name);
-        setCode(response.data.code);
-        setCredit(response.data.credit);
-        setMajorId(response.data.majorId?._id || '');
+        const { name, code, credit, majorId } = JSON.parse(response).data;
+
+        setName(name || '');
+        setCode(code || '');
+        setCredit(credit || '');
+        setMajorId(majorId?._id || '');
       } catch (err) {
-        setError(err.message || 'Failed to fetch course details');
+        setError('Không thể tải thông tin khóa học');
       } finally {
         setLoading(false);
       }
     };
 
+    const fetchMajors = async () => {
+      try {
+        const response = await sendGet(`http://localhost:8080/api/major/getAll`);
+        const majorData = JSON.parse(response).data;
+        setMajors(majorData || []);
+      } catch (err) {
+        setError('Không thể tải danh sách ngành học');
+      }
+    };
+
     fetchCourse();
+    fetchMajors();
   }, [id]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    if (!majorId) {
+      setError('Vui lòng chọn một ngành học hợp lệ.');
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await sendPut(`http://localhost:8080/api/course/update/${id}`, {
         name,
         code,
         credit,
-        majorId
+        majorId,
       });
+      const responseData = JSON.parse(response);
 
-      setMessage('Course updated successfully!');
-      setTimeout(() => {
-        navigate('/');
-      }, 2000); 
+      if (responseData && responseData.data) {
+        setSuccess('Khóa học đã được cập nhật thành công!');
+        onUpdateCourse(responseData.data);
+      }
     } catch (err) {
-      setError(err.message || 'Failed to update course');
+      setError('Lỗi khi cập nhật khóa học');
+    } finally {
+      setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        navigate('/courses');
+      }, 1000);
+    }
+  }, [success, navigate]);
+
+
+  const handleCancel = () => {
+    navigate('/courses'); 
+  };
 
   return (
-    <Container className="mt-5">
-      <h1>Edit Course</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formCourseName">
-          <Form.Label>Course Name</Form.Label>
-          <Form.Control
+    <div className="edit-course-container">
+      <h1>Sửa Khóa Học</h1>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Tên Khóa Học:</label>
+          <input
             type="text"
-            placeholder="Enter course name"
+            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
-        </Form.Group>
-
-        <Form.Group controlId="formCourseCode">
-          <Form.Label>Course Code</Form.Label>
-          <Form.Control
+        </div>
+        <div className="form-group">
+          <label htmlFor="code">Mã Khóa Học:</label>
+          <input
             type="text"
-            placeholder="Enter course code"
+            id="code"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             required
           />
-        </Form.Group>
-
-        <Form.Group controlId="formCourseCredit">
-          <Form.Label>Credit Hours</Form.Label>
-          <Form.Control
+        </div>
+        <div className="form-group">
+          <label htmlFor="credit">Số Tín Chỉ:</label>
+          <input
             type="number"
-            placeholder="Enter credit hours"
+            id="credit"
             value={credit}
             onChange={(e) => setCredit(e.target.value)}
             required
           />
-        </Form.Group>
-
-        <Form.Group controlId="formMajorId">
-          <Form.Label>Major ID</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter major ID"
+        </div>
+        <div className="form-group">
+          <label htmlFor="majorId">Ngành Học:</label>
+          <select
+            id="majorId"
             value={majorId}
             onChange={(e) => setMajorId(e.target.value)}
             required
-          />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Update Course
-        </Button>
-      </Form>
-
-      {message && (
-        <Alert variant="success" className="mt-3">
-          {message}
-        </Alert>
-      )}
-
-      {error && (
-        <Alert variant="danger" className="mt-3">
-          {error}
-        </Alert>
-      )}
-    </Container>
+          >
+            <option value="">Chọn ngành học</option>
+            {majors.map((major) => (
+              <option key={major._id} value={major._id}>
+                {major.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Đang cập nhật...' : 'Cập Nhật Khóa Học'}
+        </button>
+        <button type="button" onClick={handleCancel}>Hủy</button>
+      </form>
+    </div>
   );
 };
 

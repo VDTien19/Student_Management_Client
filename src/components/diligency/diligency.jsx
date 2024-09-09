@@ -75,7 +75,7 @@ const DiligencyList = () => {
           {diligencies.map((diligency) => (
             <tr key={diligency._id}>
               <td>{diligency.studentId.fullname}</td>
-              <td>{diligency.courseId.courseName}</td>
+              <td>{diligency.courseId.name}</td>
               <td>{new Date(diligency.date).toDateString()}</td>
               <td>{diligency.notes}</td>
               <td>

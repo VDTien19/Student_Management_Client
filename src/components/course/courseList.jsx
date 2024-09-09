@@ -17,7 +17,9 @@ const CourseList = () => {
     setLoading(true);
     try {
       const response = await sendGet('http://localhost:8080/api/course/getAll');
-      setCourses(response.data?.data || []);
+      const data = JSON.parse(response);
+      setCourses(data.data || []);
+      console.log(data.data)
     } catch (err) {
       setError(err.message || 'Failed to fetch courses');
     } finally {
