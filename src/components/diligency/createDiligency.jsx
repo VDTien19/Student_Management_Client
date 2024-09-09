@@ -95,7 +95,7 @@ const DiligencyCreate = () => {
             <option value="">Select a course</option>
             {courses.map((course) => (
               <option key={course._id} value={course._id}>
-                {course.courseName}
+                {course.name}
               </option>
             ))}
           </Form.Control>

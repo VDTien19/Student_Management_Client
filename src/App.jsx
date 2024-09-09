@@ -83,7 +83,7 @@ const App = () => {
                     <Route path="/update-transcript/:id" element={<UpdateTranscript />} />
                     <Route path="/diligency" element={<DiligencyList />} />
                     <Route path="/add-diligency" element={<DiligencyCreate />} />
-                    <Route path="/update-diligency/:id" element={<DiligencyUpdate />} />
+                    <Route path="/diligency/update/:id" element={<DiligencyUpdate />} />
                   </Routes>
                 </Col>
               </Row>
