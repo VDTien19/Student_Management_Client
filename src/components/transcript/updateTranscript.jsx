@@ -28,12 +28,12 @@ const UpdateTranscript = ({ show, onHide, onSave, transcript }) => {
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
-                <Modal.Title>Edit Transcript</Modal.Title>
+                <Modal.Title>Sửa Bảng Điểm</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group>
-                        <Form.Label>Student ID</Form.Label>
+                        <Form.Label>Mã Sinh viên</Form.Label>
                         <Form.Control
                             type="text"
                             value={updatedTranscript.studentId}
@@ -41,7 +41,7 @@ const UpdateTranscript = ({ show, onHide, onSave, transcript }) => {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Semester ID</Form.Label>
+                        <Form.Label>Mã Học Kì</Form.Label>
                         <Form.Control
                             type="text"
                             value={updatedTranscript.semesterId}
@@ -59,8 +59,8 @@ const UpdateTranscript = ({ show, onHide, onSave, transcript }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>Close</Button>
-                <Button variant="primary" onClick={handleSave}>Save Changes</Button>
+                <Button variant="secondary" onClick={onHide}>Đóng</Button>
+                <Button variant="primary" onClick={handleSave}>Lưu</Button>
             </Modal.Footer>
         </Modal>
     );

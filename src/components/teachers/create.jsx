@@ -28,10 +28,10 @@ const AddTeacher = () => {
 
   return (
     <div className="add-teacher-container">
-      <h2>Add New Teacher</h2>
+      <h2>Thêm Giảng viên</h2>
       <form onSubmit={handleAddTeacher} className="add-teacher-form">
         <div className="form-group">
-          <label htmlFor="fullname">Full Name:</label>
+          <label htmlFor="fullname">Họ và Tên:</label>
           <input
             id="fullname"
             type="text"
@@ -55,7 +55,7 @@ const AddTeacher = () => {
           />
         </div>
         <div className="form-group">
-          <button type="submit" className="submit-button">Add Teacher</button>
+          <button type="submit" className="submit-button">Thêm</button>
         </div>
       </form>
     </div>

@@ -1,0 +1,69 @@
+/* SemesterList.css */
+
+.semester-list-container {
+  padding: 1.5rem;
+  background-color: #ffffff; /* White background for the container */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for the container */
+}
+
+.semester-list-container h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333333; /* Darker text color */
+}
+
+.semester-list-container button {
+  background-color: #007bff; /* Blue color for buttons */
+  color: #ffffff; /* White text color */
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-right: 0.5rem; /* Space between buttons */
+}
+
+.semester-list-container button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.semester-list-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.semester-list-container li {
+  padding: 1rem;
+  border-bottom: 1px solid #dddddd; /* Light gray border for list items */
+  margin-bottom: 0.5rem;
+}
+
+.semester-list-container li h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333333; /* Darker text color */
+  margin-bottom: 0.5rem;
+}
+
+.semester-list-container li p {
+  margin: 0.25rem 0;
+  color: #555555; /* Slightly lighter text color */
+}
+
+.semester-list-container li button {
+  background-color: #dc3545; /* Red color for delete button */
+  color: #ffffff; /* White text color */
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-right: 0.5rem; /* Space between buttons */
+}
+
+.semester-list-container li button:hover {
+  background-color: #c82333; /* Darker red on hover */
+}

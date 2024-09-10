@@ -36,10 +36,10 @@ const AddMajor = ({ onAddMajor }) => {
 
   return (
     <div className="add-Major-container">
-      <h2>Add New Major</h2>
+      <h2>Thêm Chuyên Ngành</h2>
       <form onSubmit={handleAddMajor} className="add-Major-form">
         <div className="form-group">
-          <label htmlFor="name">Major Name:</label>
+          <label htmlFor="name">Tên Ngành:</label>
           <input
             id="name"
             type="text"
@@ -51,7 +51,7 @@ const AddMajor = ({ onAddMajor }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="code">Major Code:</label>
+          <label htmlFor="code">Mã Ngành:</label>
           <input
             id="code"
             type="text"
@@ -63,7 +63,7 @@ const AddMajor = ({ onAddMajor }) => {
           />
         </div>
         <div className="form-group">
-          <button type="submit" className="submit-button">Add Major</button>
+          <button type="submit" className="submit-button">Thêm Ngành</button>
         </div>
       </form>
     </div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { sendGet, sendPut } from '../../utils/httpUtil';
+import './EditCourse.css';
+
 
 const EditCourse = ({ onClose, onUpdateCourse }) => {
   const { id } = useParams();
@@ -95,12 +97,12 @@ const EditCourse = ({ onClose, onUpdateCourse }) => {
 
   return (
     <div className="edit-course-container">
-      <h1>Sửa Khóa Học</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
+      <h1>Sửa Môn Học</h1>
+      {error && <p className='error-course' style={{ color: 'red' }}>{error}</p>}
+      {success && <p className='error-course' style={{ color: 'green' }}>{success}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Tên Khóa Học:</label>
+          <label htmlFor="name">Tên Môn Học:</label>
           <input
             type="text"
             id="name"
@@ -110,7 +112,7 @@ const EditCourse = ({ onClose, onUpdateCourse }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="code">Mã Khóa Học:</label>
+          <label htmlFor="code">Mã Môn Học:</label>
           <input
             type="text"
             id="code"
@@ -120,9 +122,9 @@ const EditCourse = ({ onClose, onUpdateCourse }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="credit">Số Tín Chỉ:</label>
+          <label htmlFor="credit">Số Giờ Học:</label>
           <input
-            type="number"
+            type="number-course"
             id="credit"
             value={credit}
             onChange={(e) => setCredit(e.target.value)}
@@ -130,7 +132,7 @@ const EditCourse = ({ onClose, onUpdateCourse }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="majorId">Ngành Học:</label>
+          <label htmlFor="majorId">Chuyên Ngành:</label>
           <select
             id="majorId"
             value={majorId}
@@ -148,7 +150,7 @@ const EditCourse = ({ onClose, onUpdateCourse }) => {
         <button type="submit" disabled={loading}>
           {loading ? 'Đang cập nhật...' : 'Cập Nhật Khóa Học'}
         </button>
-        <button type="button" onClick={handleCancel}>Hủy</button>
+        <button type="button-course" onClick={handleCancel}>Hủy</button>
       </form>
     </div>
   );

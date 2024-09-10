@@ -48,10 +48,10 @@ const UserProfileUpdate = () => {
       <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" />
       <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address" />
       <select name="gender" value={formData.gender} onChange={handleChange}>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
+        <option value="male">Nam</option>
+        <option value="female">Nữ</option>
       </select>
-      <button type="submit">Update Profile</button>
+      <button type="submit">Sửa</button>
     </form>
   );
 };

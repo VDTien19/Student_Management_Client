@@ -4,6 +4,7 @@ import ClassroomForm from './ClassroomForm';
 import Modal from '../../components/modal/Modal';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './ClassroomList.css'; // Import the CSS file
 
 const ClassroomList = () => {
   const [classrooms, setClassrooms] = useState([]);
@@ -64,13 +65,13 @@ const ClassroomList = () => {
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Classrooms</h2>
+    <div className="container">
+      <h2 className="title">Lớp Học</h2>
       <button
         onClick={() => openModal()}
-        className="bg-blue-500 text-dark px-4 py-2 rounded mb-4"
+        className="add-button-classroom"
       >
-        Add Classroom
+        Thêm Lớp Học
       </button>
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -80,28 +81,28 @@ const ClassroomList = () => {
       <ul className="list-disc pl-5">
         {classrooms.length > 0 ? (
           classrooms.map(classroom => (
-            <li key={classroom._id} className="mb-2">
-              <h3 className="text-xl">{classroom.name}</h3>
-              <p className="text-gray-600">Teacher: {classroom.gvcn?.fullname || 'N/A'}</p>
-              <p className="text-gray-600">Year: {classroom.year}</p>
+            <li key={classroom._id} className="list-item">
+              <h3 className="classroom-name">{classroom.name}</h3>
+              <p className="classroom-info">Giáo viên: {classroom.gvcn?.fullname || 'N/A'}</p>
+              <p className="classroom-info">Năm học: {classroom.year}</p>
               <div className="mt-2">
                 <button
                   onClick={() => openModal(classroom._id)}
-                  className="bg-blue-500 text-dark px-4 py-2 rounded mr-2"
+                  className="modal-button"
                 >
-                  Edit
+                  Sửa
                 </button>
                 <button
                   onClick={() => handleDelete(classroom._id)}
-                  className="bg-red-500 text-dark px-4 py-2 rounded"
+                  className="delete-button"
                 >
-                  Delete
+                  Xoá
                 </button>
               </div>
             </li>
           ))
         ) : (
-          <p>No classrooms found.</p>
+          <p className="no-classrooms">No classrooms found.</p>
         )}
       </ul>
       <ToastContainer />

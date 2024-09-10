@@ -100,23 +100,23 @@ const UserList = () => {
               <p>Email: {user.email}</p>
               <p>MSV: {user.msv}</p>
               <p>
-                Class: 
+                Lớp: 
                 {user.gvcn?.classrooms ? user.gvcn?.classrooms.name : 'N/A'}
               </p>
-              <p>Gender: {user.gender}</p>
-              <p>Year: {user.year}</p>
-              <p>Major: {user.majorIds.map(major => major.name).join(' | ')}</p>
+              <p>Giới Tính: {user.gender}</p>
+              <p>Năm Học: {user.year}</p>
+              <p>Chuyên Ngành: {user.majorIds.map(major => major.name).join(' | ')}</p>
               <p>GVCN: {user.gvcn?.fullname || 'N/A'}</p>
               <div className="button-group">
-                <button className="delete-btn" onClick={() => handleDeleteUser(user._id)}>Delete</button>
+                <button className="delete-btn" onClick={() => handleDeleteUser(user._id)}>Xoá</button>
 
                 {currentUser && currentUser.isAdmin ? (
                   <Link to={`/users/edit/admin/${user._id}`}>
-                    <button className="edit-btn">Edit</button>
+                    <button className="edit-btn">Sửa</button>
                   </Link>
                 ) : currentUser && currentUser.isGv ? (
                   <Link to={`/users/edit/user/${user._id}`}>
-                    <button className="edit-btn">Edit</button>
+                    <button className="edit-btn">Sửa</button>
                   </Link>
                 ) : null}
               </div>

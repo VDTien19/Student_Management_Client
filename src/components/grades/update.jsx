@@ -54,12 +54,12 @@ const UpdateGrade = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Update Grade</h2>
+      <h2>Sửa Điểm</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="courseId">Course ID</label>
+          <label htmlFor="courseId">Mã Môn Học</label>
           <input
             type="text"
             className="form-control"
@@ -70,7 +70,7 @@ const UpdateGrade = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="midScore">Mid Score</label>
+          <label htmlFor="midScore">Điểm giữa kì</label>
           <input
             type="number"
             className="form-control"
@@ -84,7 +84,7 @@ const UpdateGrade = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="finalScore">Final Score</label>
+          <label htmlFor="finalScore">Điểm Cuối Kì</label>
           <input
             type="number"
             className="form-control"
@@ -98,7 +98,7 @@ const UpdateGrade = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="transcriptId">Transcript ID</label>
+          <label htmlFor="transcriptId">Mã bảng điểm</label>
           <input
             type="text"
             className="form-control"
@@ -109,7 +109,7 @@ const UpdateGrade = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary">
-          Update Grade
+          Sửa
         </button>
       </form>
     </div>

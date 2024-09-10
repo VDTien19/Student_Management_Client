@@ -64,12 +64,12 @@ const AddGrade = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Add New Grade</h2>
+      <h2>Thêm Điểm</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="courseId">Course</label>
+          <label htmlFor="courseId">Môn Học</label>
           <select
             id="courseId"
             className="form-control"
@@ -77,7 +77,7 @@ const AddGrade = () => {
             onChange={(e) => setCourseId(e.target.value)}
             required
           >
-            <option value="">Select Course</option>
+            <option value="">Chọn Môn Học</option>
             {courses.map((course) => (
               <option key={course._id} value={course._id}>
                 {course.name}
@@ -86,7 +86,7 @@ const AddGrade = () => {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="midScore">Mid Score</label>
+          <label htmlFor="midScore">Điểm giữa kì</label>
           <input
             type="number"
             className="form-control"
@@ -100,7 +100,7 @@ const AddGrade = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="finalScore">Final Score</label>
+          <label htmlFor="finalScore">Điểm Cuối Kì</label>
           <input
             type="number"
             className="form-control"
@@ -114,7 +114,7 @@ const AddGrade = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="transcriptId">Transcript</label>
+          <label htmlFor="transcriptId">Bảng Điểm</label>
           <select
             id="transcriptId"
             className="form-control"
@@ -122,18 +122,18 @@ const AddGrade = () => {
             onChange={(e) => setTranscriptId(e.target.value)}
             required
           >
-            <option value="">Select Transcript</option>
+            <option value="">Chọn Bảng Điểm</option>
             {transcripts.map((transcript) => (
               <option key={transcript._id} value={transcript._id}>
-                {transcript.studentName} - {transcript.year}
+                {transcript.student.fullname} - {transcript.year}
               </option>
             ))}
           </select>
         </div>
         <button type="submit" className="btn btn-primary">
-          Add Grade
+          Thêm Điểm
         </button>
-      </form>
+      </form> 
     </div>
   );
 };

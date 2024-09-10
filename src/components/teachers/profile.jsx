@@ -59,7 +59,7 @@ const TeacherList = () => {
         <button type="submit">Search</button>
       </form>
       <Link to="/teachers/add" className="add-button">
-        <button>Add Teacher</button>
+        <button>Thêm Giảng Viên</button>
       </Link>
       {teacher.length === 0 ? (
         <p>No teachers found</p>
@@ -70,7 +70,7 @@ const TeacherList = () => {
               <h3>{teacher.fullname}</h3>
               <p>MGV: {teacher.mgv}</p>
               <p>
-                Class: {teacher.classrooms?.name || 'No class assigned'}
+                Lớp: {teacher.classrooms?.name || 'No class assigned'}
               </p>
             </li>
           ))}

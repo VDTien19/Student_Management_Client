@@ -47,7 +47,7 @@ const DiligencyList = () => {
 
   return (
     <Container className="my-4">
-      <h3>Diligency Records</h3>
+      <h3>Bảng Chuyên Cần</h3>
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">{success}</Alert>}
 
@@ -56,7 +56,7 @@ const DiligencyList = () => {
         onClick={() => setShowCreateForm(!showCreateForm)}
         className="mb-3"
       >
-        {showCreateForm ? 'Cancel' : 'Add New Diligency Record'}
+        {showCreateForm ? 'Cancel' : 'Thêm'}
       </Button>
 
       {showCreateForm && <DiligencyCreate />}
@@ -64,10 +64,10 @@ const DiligencyList = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>Student</th>
-            <th>Course</th>
-            <th>Date</th>
-            <th>Notes</th>
+            <th>Sinh viên</th>
+            <th>Môn Học</th>
+            <th>Ngày Tháng</th>
+            <th>Ghi Chú</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -80,13 +80,13 @@ const DiligencyList = () => {
               <td>{diligency.notes}</td>
               <td>
                 <Link to={`/diligency/update/${diligency._id}`}>
-                    <Button variant="warning" size="sm" className="me-2">Edit</Button>
+                    <Button variant="warning" size="sm" className="me-2">Sửa</Button>
                 </Link>
                 <Button
                   variant="danger"
                   onClick={() => handleDelete(diligency._id)}
                 >
-                  Delete
+                  Xoá
                 </Button>
               </td>
             </tr>

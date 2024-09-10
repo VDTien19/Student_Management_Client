@@ -63,7 +63,7 @@ const DiligencyCreate = () => {
 
   return (
     <Container className="my-4">
-      <h3>Add New Diligency Record</h3>
+      <h3>Thêm bản ghi chuyên cần</h3>
       {message && <div className="alert alert-success">{message}</div>}
       {error && <div className="alert alert-danger">{error}</div>}
       <Form onSubmit={handleSubmit}>
@@ -75,7 +75,7 @@ const DiligencyCreate = () => {
             onChange={(e) => setStudentId(e.target.value)}
             required
           >
-            <option value="">Select a student</option>
+            <option value="">Chọn sinh viên</option>
             {students.map((student) => (
               <option key={student._id} value={student._id}>
                 {student.fullname}
@@ -85,14 +85,14 @@ const DiligencyCreate = () => {
         </Form.Group>
 
         <Form.Group controlId="courseId">
-          <Form.Label>Course</Form.Label>
+          <Form.Label>Môn học</Form.Label>
           <Form.Control
             as="select"
             value={courseId}
             onChange={(e) => setCourseId(e.target.value)}
             required
           >
-            <option value="">Select a course</option>
+            <option value="">Chọn Môn học</option>
             {courses.map((course) => (
               <option key={course._id} value={course._id}>
                 {course.name}
@@ -102,7 +102,7 @@ const DiligencyCreate = () => {
         </Form.Group>
 
         <Form.Group controlId="date">
-          <Form.Label>Date</Form.Label>
+          <Form.Label>Ngày tháng</Form.Label>
           <Form.Control
             type="date"
             value={date}
@@ -112,7 +112,7 @@ const DiligencyCreate = () => {
         </Form.Group>
 
         <Form.Group controlId="notes">
-          <Form.Label>Notes</Form.Label>
+          <Form.Label>Ghi Chú</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
@@ -122,7 +122,7 @@ const DiligencyCreate = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Add Record
+          Thêm
         </Button>
       </Form>
     </Container>

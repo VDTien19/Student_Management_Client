@@ -1,19 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { sendPut, sendGet } from '../../utils/httpUtil'; // Adjust the import path as needed
 import { useParams, useNavigate } from 'react-router-dom';
+import './DiligencyUpdate.css'; // Import the CSS file
 
 const DiligencyUpdate = () => {
   const { id } = useParams(); // Get the id from the URL params
   const navigate = useNavigate();
-  const [diligency, setDiligency] = useState({ studentId: '', courseId: '', date: '', notes: '' });
+  
+  const [diligency, setDiligency] = useState({ studentId: '', course: '', date: '', notes: '' });
+  const [courses, setCourses] = useState([]); // Store the list of courses
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Fetch all courses
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const courseResponse = await sendGet('http://localhost:8080/api/course/getAll'); // Adjust the endpoint if needed
+        const courseJsonResponse = JSON.parse(courseResponse);
+        if (courseJsonResponse.data) {
+          setCourses(courseJsonResponse.data); // Set the course list
+        } else {
+          setError('No courses found');
+        }
+      } catch (err) {
+        setError(err.message || 'Error fetching courses');
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  // Fetch the diligency data by student ID
   useEffect(() => {
     const fetchDiligency = async () => {
       try {
-        const response = await sendGet(`http://localhost:8080/api/diligency/student/${id}`); // Ensure ID is correct
+        const response = await sendGet(`http://localhost:8080/api/diligency/student/${id}`);
         const jsonResponse = JSON.parse(response);
         if (jsonResponse.data) {
           setDiligency(jsonResponse.data);
@@ -45,7 +68,7 @@ const DiligencyUpdate = () => {
     setSuccess(null);
 
     try {
-      const response = await sendPut(`http://localhost:8080/api/diligency/update/${id}`, diligency); // Correct endpoint
+      const response = await sendPut(`http://localhost:8080/api/diligency/update/${id}`, diligency);
       const jsonResponse = JSON.parse(response);
       if (jsonResponse.message === 'Diligency record updated successfully') {
         setSuccess('Diligency record updated successfully');
@@ -64,34 +87,44 @@ const DiligencyUpdate = () => {
 
   return (
     <div className="edit-diligency-container">
-      <h1>Cập Nhật Hồ Sơ Điểm Danh</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
+      <h1>Sửa chuyên cần</h1>
+      {error && <p className="status-message error">{error}</p>}
+      {success && <p className="status-message success">{success}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="studentId">Mã Sinh Viên:</label>
+          <label htmlFor="studentId">Sinh viên:</label>
           <input
             type="text"
-            id="studentId"
-            name="studentId"
-            value={diligency.studentId}
+            id="student"
+            name="student"
+            value={diligency.studentId ? diligency.studentId.fullname : ''}
             onChange={handleChange}
             required
+            readOnly // Make it read-only if you don't want to change the student
           />
         </div>
+
+        {/* Course Select Dropdown */}
         <div className="form-group">
-          <label htmlFor="courseId">Mã Môn Học:</label>
-          <input
-            type="text"
-            id="courseId"
-            name="courseId"
-            value={diligency.courseId}
+          <label htmlFor="course">Môn Học:</label>
+          <select
+            id="course"
+            name="course"
+            value={diligency.courseId ? diligency.courseId._id : ''}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Chọn Môn Học</option>
+            {courses.map((course) => (
+              <option key={course._id} value={course._id}>
+                {course.name}
+              </option>
+            ))}
+          </select>
         </div>
+
         <div className="form-group">
-          <label htmlFor="date">Ngày:</label>
+          <label htmlFor="date">Ngày Tháng:</label>
           <input
             type="date"
             id="date"
@@ -111,10 +144,10 @@ const DiligencyUpdate = () => {
             rows="3"
           />
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Đang Cập Nhật...' : 'Cập Nhật Hồ Sơ'}
+        <button type="submit-diligency" disabled={loading}>
+          {loading ? 'Updating...' : 'Update Diligency Record'}
         </button>
-        <button type="button" onClick={() => navigate('/diligency')}>Hủy</button>
+        <button type="button" className="cancel-button" onClick={() => navigate('/diligency')}>Thoát</button>
       </form>
     </div>
   );

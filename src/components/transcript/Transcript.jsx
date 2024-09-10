@@ -89,15 +89,14 @@ const TranscriptList = () => {
 
     return (
         <div className="container mt-5">
-            <h2>Transcripts</h2>
-            <Button variant="primary" onClick={handleCreate}>Add New Transcript</Button>
+            <h2>Bảng Điểm</h2>
+            <Button variant="primary" onClick={handleCreate}>Thêm</Button>
             <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Student Name</th>
-                        <th>Student MSV</th>
-                        <th>Semester</th>
+                        <th> Tên Sinh Viên</th>
+                        <th>MSV</th>
+                        <th>Kì Học</th>
                         <th>GPA</th>
                         <th>Actions</th>
                     </tr>
@@ -106,14 +105,13 @@ const TranscriptList = () => {
                     {transcripts.map(transcript => (
                         <React.Fragment key={transcript?._id}>
                             <tr>
-                                <td>{transcript?._id}</td>
                                 <td>{transcript?.student?.fullname || 'N/A'}</td>
                                 <td>{transcript?.student?.msv || 'N/A'}</td>
                                 <td>{transcript?.semester?.semester || 'N/A'} - {transcript?.semester?.year || 'N/A'}</td>
                                 <td>{calculateGPA(transcript?.student?._id)}</td> {/* Calculate GPA from grades */}
                                 <td>
-                                    <Button variant="info" onClick={() => handleEdit(transcript)}>Edit</Button>{' '}
-                                    <Button variant="danger" onClick={() => handleDelete(transcript?._id)}>Delete</Button>{' '}
+                                    <Button variant="info" onClick={() => handleEdit(transcript)}>Sửa</Button>{' '}
+                                    <Button variant="danger" onClick={() => handleDelete(transcript?._id)}>Xoá</Button>{' '}
                                     <Button
                                         variant="secondary"
                                         onClick={() => toggleGradesVisibility(transcript?._id)}
@@ -131,19 +129,19 @@ const TranscriptList = () => {
                                             <Table striped bordered>
                                                 <thead>
                                                     <tr>
-                                                        <th>Course</th>
-                                                        <th>Midterm Score</th>
-                                                        <th>Final Score</th>
-                                                        <th>Average Score</th>
+                                                        <th>Môn Học</th>
+                                                        <th>Điểm Giữa Kì</th>
+                                                        <th>Điểm Cuối Kì</th>
+                                                        <th>Điểm Trung Bình</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {getGradesForStudent(transcript?.student?._id).map(grade => (
                                                         <tr key={grade?._id}>
-                                                            <td>{grade?.course?.name || 'N/A'}</td>
-                                                            <td>{grade?.midScore || 'N/A'}</td>
-                                                            <td>{grade?.finalScore || 'N/A'}</td>
-                                                            <td>{((grade?.midScore + grade?.finalScore) / 2).toFixed(2)}</td>
+                                                            <td>{grade.course?.name || 'N/A'}</td>
+                                                            <td>{grade.midScore || 'N/A'}</td>
+                                                            <td>{grade.finalScore || 'N/A'}</td>
+                                                            <td>{((grade.midScore + grade.finalScore) / 2).toFixed(2)}</td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
