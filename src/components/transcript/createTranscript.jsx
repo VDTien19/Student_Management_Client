@@ -105,18 +105,18 @@ const CreateTranscript = ({ show, onHide, onSave }) => {
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
-                <Modal.Title>Add New Transcript</Modal.Title>
+                <Modal.Title>Thêm Bảng Điểm</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group>
-                        <Form.Label>Student</Form.Label>
+                        <Form.Label>Sinh Viên</Form.Label>
                         <Form.Control
                             as="select"
                             value={newTranscript.studentId}
                             onChange={(e) => setNewTranscript({ ...newTranscript, studentId: e.target.value })}
                         >
-                            <option value="">Select Student</option>
+                            <option value="">Chọn Sinh Viên</option>
                             {students.map((student) => (
                                 <option key={student._id} value={student._id}>
                                     {student.fullname}
@@ -125,16 +125,16 @@ const CreateTranscript = ({ show, onHide, onSave }) => {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Semester</Form.Label>
+                        <Form.Label>Kì Học</Form.Label>
                         <Form.Control
                             as="select"
                             value={newTranscript.semesterId}
                             onChange={(e) => setNewTranscript({ ...newTranscript, semesterId: e.target.value })}
                         >
-                            <option value="">Select Semester</option>
+                            <option value="">Chọn Kì Học</option>
                             {semesters.map((semester) => (
                                 <option key={semester._id} value={semester._id}>
-                                    {semester.name}
+                                    {semester.semester}
                                 </option>
                             ))}
                         </Form.Control>
@@ -150,8 +150,8 @@ const CreateTranscript = ({ show, onHide, onSave }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>Close</Button>
-                <Button variant="primary" onClick={handleSave}>Create Transcript</Button>
+                <Button variant="secondary" onClick={onHide}>Đóng</Button>
+                <Button variant="primary" onClick={handleSave}>Thêm</Button>
             </Modal.Footer>
         </Modal>
     );

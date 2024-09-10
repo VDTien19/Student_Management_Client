@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { sendGet, sendDelete } from '../../utils/httpUtil';
 import AddSemester from './AddSemester'; // Ensure this path is correct
 import EditSemester from './EditSemester'; // Ensure this path is correct
-// import './SemesterList.css';
+import './SemesterList.css'; // Import the CSS file
 
 const SemesterList = () => {
   const [semesters, setSemesters] = useState([]);

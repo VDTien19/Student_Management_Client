@@ -60,10 +60,10 @@ const CourseList = () => {
 
   return (
     <Container className="mt-5">
-      <h1>Course List</h1>
+      <h1>Danh sách môn học</h1>
       <Link to="/add-course">
         <Button variant="primary" className="mb-3">
-          Add Course
+          Thêm môn học
         </Button>
       </Link>
       {deleteMessage && (
@@ -74,10 +74,10 @@ const CourseList = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Code</th>
-            <th>Credit</th>
-            <th>Major</th>
+            <th>Tên môn:</th>
+            <th>Mã môn:</th>
+            <th>Số giờ học</th>
+            <th>Chuyên Ngành</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -92,14 +92,14 @@ const CourseList = () => {
                 <td>
                   <Link to={`/edit-course/${course._id}`}>
                     <Button variant="warning" className="mr-2">
-                      Edit
+                      Sửa
                     </Button>
                   </Link>
                   <Button
                     variant="danger"
                     onClick={() => handleDelete(course._id)}
                   >
-                    Delete
+                    Xoá
                   </Button>
                 </td>
               </tr>

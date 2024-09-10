@@ -50,10 +50,10 @@ const AddCourse = () => {
 
   return (
     <Container className="mt-5">
-      <h1>Add Course</h1>
+      <h1>Thêm môn học</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formCourseName">
-          <Form.Label>Course Name</Form.Label>
+          <Form.Label>Tên môn</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter course name"
@@ -64,7 +64,7 @@ const AddCourse = () => {
         </Form.Group>
 
         <Form.Group controlId="formCourseCode">
-          <Form.Label>Course Code</Form.Label>
+          <Form.Label>Mã môn</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter course code"
@@ -75,7 +75,7 @@ const AddCourse = () => {
         </Form.Group>
 
         <Form.Group controlId="formCourseCredit">
-          <Form.Label>Credit Hours</Form.Label>
+          <Form.Label>Số giờ học</Form.Label>
           <Form.Control
             type="number"
             placeholder="Enter credit hours"
@@ -86,14 +86,14 @@ const AddCourse = () => {
         </Form.Group>
 
         <Form.Group controlId="formMajorId">
-          <Form.Label>Major</Form.Label>
+          <Form.Label>Chuyên Ngành</Form.Label>
           <Form.Control
             as="select" // Changed to a select dropdown
             value={majorId}
             onChange={(e) => setMajorId(e.target.value)}
             required
           >
-            <option value="">Select Major</option>
+            <option value="">Chọn Chuyên Ngành</option>
             {majors.map((major) => (
               <option key={major._id} value={major._id}>
                 {major.name}
@@ -103,7 +103,7 @@ const AddCourse = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Add Course
+          Thêm môn học
         </Button>
       </Form>
 

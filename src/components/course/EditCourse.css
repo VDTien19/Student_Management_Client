@@ -1,0 +1,86 @@
+.edit-course-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .edit-course-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .form-group input[type="number-course"] {
+    -moz-appearance: textfield;
+  }
+  
+  .form-group input[type="number-course"]::-webkit-inner-spin-button,
+  .form-group input[type="number-course"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  button[type="button-course"] {
+    background-color: #6c757d;
+  }
+  
+  button[type="button-course"]:hover {
+    background-color: #5a6268;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-course {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .error-course[style*="color: red"] {
+    color: red;
+  }
+  
+  .error-course[style*="color: green"] {
+    color: green;
+  }
+  

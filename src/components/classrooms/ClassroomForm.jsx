@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { sendGet, sendPost, sendPut } from '../../utils/httpUtil';
 import { toast } from 'react-toastify'; // Import toast here
 import 'react-toastify/dist/ReactToastify.css';
+import './ClassroomForm.css'; // Import the CSS file
 
 const ClassroomForm = ({ id, onClose }) => {
   const [classroom, setClassroom] = useState({ name: '', gvcn: '', students: [], year: '' });
@@ -61,30 +62,30 @@ const ClassroomForm = ({ id, onClose }) => {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">{id ? 'Edit Classroom' : 'Create Classroom'}</h2>
+    <div className="form-container">
+      <h2 className="form-title">{id ? 'Edit Classroom' : 'Create Classroom'}</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-700">Name</label>
+        <div className="form-group">
+          <label className="form-label">Tên:</label>
           <input
             type="text"
             name="name"
             value={classroom.name}
             onChange={handleChange}
-            className="border px-3 py-2 rounded w-full"
+            className="form-input"
             required
           />
         </div>
-        <div>
-          <label className="block text-gray-700">Teacher</label>
+        <div className="form-group">
+          <label className="form-label">Giáo viên:</label>
           <select
             name="gvcn"
             value={classroom.gvcn || ''}
             onChange={handleChange}
-            className="border px-3 py-2 rounded w-full"
+            className="form-select"
             required
           >
-            <option value="">Select Teacher</option>
+            <option value="">Chọn giáo viên</option>
             {teachers.map(teacher => (
               <option key={teacher._id} value={teacher._id}>
                 {teacher.fullname}
@@ -92,18 +93,18 @@ const ClassroomForm = ({ id, onClose }) => {
             ))}
           </select>
         </div>
-        <div>
-          <label className="block text-gray-700">Year</label>
+        <div className="form-group">
+          <label className="form-label">Năm học:</label>
           <input
             type="text"
             name="year"
             value={classroom.year}
             onChange={handleChange}
-            className="border px-3 py-2 rounded w-full"
+            className="form-input"
             required
           />
         </div>
-        <button type="submit" className="bg-blue-500 text-dark px-4 py-2 rounded">
+        <button type="submit" className="submit-button-classroom">
           {id ? 'Update Classroom' : 'Create Classroom'}
         </button>
       </form>

@@ -55,10 +55,10 @@ const GradeList = () => {
 
   return (
     <div className="container">
-      <h1>Grades</h1>
+      <h1>Điểm</h1>
       <Link to="/add-grades">
         <Button variant="primary" className="mb-3">
-          Add Grade
+          Thêm Điểm
         </Button>
       </Link>
       {error && <div className="alert alert-danger">{error}</div>}
@@ -68,13 +68,12 @@ const GradeList = () => {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Student Name</th>
+              <th>Sinh viên</th>
               <th>MSV</th>
-              <th>Course</th>
-              <th>Mid Score</th>
-              <th>Final Score</th>
-              <th>Average Score</th>
-              <th>Transcript ID</th>
+              <th>Môn học</th>
+              <th>Điểm giữa kì</th>
+              <th>Điểm Cuối Kì</th>
+              <th>Điểm trung bình</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -83,22 +82,21 @@ const GradeList = () => {
               const studentInfo = getStudentInfo(grade.student?._id);  // Handle student safely
               return (
                 <tr key={grade._id}>
-                  <td>{studentInfo.fullname}</td>
-                  <td>{studentInfo.msv}</td>
+                  <td>{grade.student?.fullname}</td>
+                  <td>{grade.student?.msv}</td>
                   <td>{grade.course?.name || 'N/A'}</td>
                   <td>{grade.midScore}</td>
                   <td>{grade.finalScore}</td>
                   <td>{calculateAverageScore(grade.midScore, grade.finalScore)}</td>
-                  <td>{grade.transcript}</td>
                   <td>
                     <Link to={`/update-grade/${grade._id}`}>
-                      <Button variant="warning" className="mr-2">Edit</Button>
+                      <Button variant="warning" className="mr-2">Sửa</Button>
                     </Link>
                     <Button
                       variant="danger"
                       onClick={() => handleDelete(grade._id)}
                     >
-                      Delete
+                      Xoá
                     </Button>
                   </td>
                 </tr>

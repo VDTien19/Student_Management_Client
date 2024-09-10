@@ -60,7 +60,7 @@ const AddUser = () => {
     <div className="add-user">
       <form onSubmit={handleAddUser}>
       <div className="form-group">
-          <label>Full Name:</label>
+          <label>Họ và Tên:</label>
           <input
             type="text"
             name="fullname"
@@ -70,7 +70,7 @@ const AddUser = () => {
           />
         </div>
         <div className="form-group">
-          <label>MSV (Student ID):</label>
+          <label>MSV:</label>
           <input
             type="text"
             name="msv"
@@ -80,7 +80,7 @@ const AddUser = () => {
           />
         </div>
         <div className="form-group">
-          <label>Year:</label>
+          <label>Năm Học:</label>
           <input
             type="text"
             name="year"
@@ -90,7 +90,7 @@ const AddUser = () => {
           />
         </div>
         <div className="form-group">
-          <label>Class:</label>
+          <label>Lớp:</label>
           <input
             type="text"
             name="className"
@@ -109,25 +109,25 @@ const AddUser = () => {
           />
         </div>
         <div className="form-group">
-          <label>Gender:</label>
+          <label>Giới Tính:</label>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleChange}
           >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
+            <option value="Male">Nam</option>
+            <option value="Female">Nữ</option>
+            <option value="Other">Khác</option>
           </select>
         </div>
         <div className="form-group">
-          <label>Teacher (GVCN):</label>
+          <label>Giáo Viên (GVCN):</label>
           <select
             name="gvcn"
             value={formData.gvcn}
             onChange={handleChange}
           >
-            <option value="">Select a teacher</option>
+            <option value="">Chọn Giáo Viên</option>
             {Array.isArray(teachers) && teachers.map(teacher => (
               <option key={teacher._id} value={teacher._id}>
                 {teacher.fullname} (MGV: {teacher.mgv})
@@ -136,13 +136,13 @@ const AddUser = () => {
           </select>
         </div>
         <div className="form-group">
-          <label>Majors:</label>
+          <label>Chuyên Ngành:</label>
           <select
             name="majorIds"
             value={formData.majorIds}
             onChange={handleSelectMajor}
           >
-            <option value="">Select a major</option>
+            <option value="">Chọn Ngành</option>
             {Array.isArray(majors) && majors.map(major => (
               <option key={major._id} value={major._id}>
                 {major.name}
@@ -151,7 +151,7 @@ const AddUser = () => {
           </select>
         </div>
         <div>
-          <button type="submit">Add User</button>
+          <button type="submit">Thêm</button>
         </div>
       </form>
     </div>
