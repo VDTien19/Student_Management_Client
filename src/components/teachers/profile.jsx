@@ -20,6 +20,7 @@ const TeacherList = () => {
 
   const searchUserByMGV = async (mgv) => {
     try {
+      // Update the search URL to use the GET /:teacherId route
       const response = await sendGet(`http://localhost:8080/api/teacher/${mgv}`);
       const teacherData = JSON.parse(response);
 

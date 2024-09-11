@@ -16,7 +16,7 @@ const Header = ({ onLogout }) => {
   };
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg">
+    <Navbar bg="primary" variant="dark" expand="lg" style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
       <Container>
         <Navbar.Brand href="#home" className="mx-auto" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
           Quản Lý SV

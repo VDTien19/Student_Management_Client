@@ -1,84 +1,76 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Form, Button, Container } from "react-bootstrap";
-import { sendGet, sendPut } from "../../utils/httpUtil"; // Import the custom utility methods
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Container, Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { sendGet, sendPut } from '../../utils/httpUtil'; // Adjust the path as necessary
 
-const UpdateTeacher = () => {
-  const { id } = useParams(); // Get the teacher ID from URL params
-  const [teacher, setTeacher] = useState({
-    fullname: "",
-  });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+const UpdateTeacher = ({ id }) => {
+  const [teacher, setTeacher] = useState({ fullname: '', password: '', isGV: true, isAdmin: false, classrooms: [] });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Fetch existing teacher data
   useEffect(() => {
+    console.log('UpdateTeacher id:', id); // Check the value of id
     const fetchTeacher = async () => {
       try {
         const response = await sendGet(`http://localhost:8080/api/teacher/${id}`);
-        const jsonResponse = JSON.parse(response); // Parse the response
-        setTeacher(jsonResponse.data); // Assuming the response has data in the format { data: teacher }
-      } catch (error) {
-        setError("Error fetching teacher data");
+        const teacherData = response.data;
+        
+        if (teacherData) {
+          setTeacher(teacherData.data);
+        } else {
+          setError('Teacher not found');
+        }
+      } catch (err) {
+        setError('Error fetching teacher: ' + err.message);
       }
     };
+  
     fetchTeacher();
   }, [id]);
+  
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTeacher((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setTeacher((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submit for updating teacher
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+  
     try {
-      const updateData = {
-        fullname: teacher.fullname,
-      };
-      const response = await sendPut(`http://localhost:8080/api/teacher/update/${id}`, updateData);
-      const jsonResponse = JSON.parse(response);
-      if (jsonResponse) {
-        navigate("/teacher-list"); // Redirect to the teacher list page after updating
-      }
-    } catch (error) {
-      setError("Error updating teacher: " + error.message);
+      const response = await sendPut(`http://localhost:8080/api/teacher/update/${id}`, teacher);
+      setSuccess('Teacher updated successfully!');
+      setTeacher(response.data.data); // Assuming response contains the updated teacher data
+    } catch (err) {
+      setError('Failed to update teacher: ' + err.message);
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   return (
     <Container>
-      <h2>Update Teacher</h2>
-      {error && <p className="text-danger">{error}</p>}
+      <h2 className="mt-4">Update Teacher</h2>
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">{success}</Alert>}
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="mgv">
-          <Form.Label>MGV</Form.Label>
-          <Form.Control
-            type="text"
-            name="mgv"
-            value={teacher.mgv || ""} // Set the default value to an empty string if mgv is not defined
-            disabled // Don't allow changing MGV
-          />
-        </Form.Group>
-
         <Form.Group controlId="fullname">
-          <Form.Label>Fullname</Form.Label>
+          <Form.Label>Full Name</Form.Label>
           <Form.Control
             type="text"
             name="fullname"
-            value={teacher.fullname}
+            value={teacher.fullname || ''} // Ensure value is a string
             onChange={handleChange}
-            required
+            placeholder="Enter full name"
           />
         </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Update Teacher
+        <Button variant="primary" type="submit" disabled={loading}>
+          {loading ? 'Updating...' : 'Update Teacher'}
         </Button>
       </Form>
     </Container>
