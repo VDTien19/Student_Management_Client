@@ -114,7 +114,7 @@ const AddGrade = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="transcriptId">Bảng Điểm</label>
+          <label htmlFor="transcriptId">Bảng Điểm Sinh viên</label>
           <select
             id="transcriptId"
             className="form-control"
@@ -122,7 +122,7 @@ const AddGrade = () => {
             onChange={(e) => setTranscriptId(e.target.value)}
             required
           >
-            <option value="">Chọn Bảng Điểm</option>
+            <option value="">Chọn Bảng Điểm Sinh viên</option>
             {transcripts.map((transcript) => (
               <option key={transcript._id} value={transcript._id}>
                 {transcript.student.fullname} - {transcript.year}

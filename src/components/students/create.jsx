@@ -94,7 +94,7 @@ const AddUser = () => {
           <input
             type="text"
             name="className"
-            value={formData.className}
+            value={formData.class}
             onChange={handleChange}
           />
         </div>

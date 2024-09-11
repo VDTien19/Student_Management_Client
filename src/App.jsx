@@ -9,6 +9,7 @@ import UserEdit from './components/students/update';
 import AddUser from './components/students/create';
 import TeacherList from './components/teachers/profile';
 import AddTeacher from './components/teachers/create';
+import UpdateTeacher from './components/teachers/updateTeacher';
 import CourseList from './components/course/courseList';
 import AddCourse from './components/course/create';
 import EditCourse from './components/course/update';
@@ -68,6 +69,7 @@ const App = () => {
                     <Route path="/users/add" element={<AddUser />} />
                     <Route path="/teachers" element={<TeacherList />} />
                     <Route path="/teachers/add" element={<AddTeacher />} />
+                    <Route path="/teachers/edit/:id" element={<UpdateTeacher />} />
                     <Route path="/courses" element={<CourseList />} />
                     <Route path="/add-course" element={<AddCourse />} />
                     <Route path="/edit-course/:id" element={<EditCourse />} />
